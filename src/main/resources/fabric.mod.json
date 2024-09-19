@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "improvableskills",
+  "version": "${version}",
+  "name": "ImprovableSkills",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/improvableskills/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "ru.mentola.improvableskills.ImprovableSkills"
+    ],
+    "main": [
+      "ru.mentola.improvableskills.ImprovableSkills"
+    ]
+  },
+  "mixins": [
+    "improvableskills.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "key.improvableskills.openscreen": "Открыть меню прокачки",
+  "category.improvableskills": "Improvable Skills",
+
+  "skill.improvableskills.miner_luck": "Шахтерская Удача",
+  "skill.improvableskills.miner_luck.desc": "Увеличение шанса выпадения дополнительных руд при добыче (например, шанс добыть один дополнительный алмаз).",
+  "skill.improvableskills.miner_luck_attribute_percent": "Шанс удачи",
+  "skill.improvableskills.miner_luck_attribute_count": "Увеличение дропа",
+
+  "skill.improvableskills.vampirism": "Вампиризм",
+  "skill.improvableskills.vampirism.desc": "Шанс восполнить здоровье при убийстве моба или игрока.",
+  "skill.improvableskills.vampirism_attribute_chance": "Шанс вампиризма",
+  "skill.improvableskills.vampirism_attribute_percent": "Процент восполнения",
+
+  "gui.improvableskills.improvescreen.presstomore": "Нажмите чтобы узнать больше",
+  "gui.improvableskills.improvescreen.infoskill": "Информация о умении",
+  "gui.improvableskills.improvescreen.attributes": "Атрибуты",
+  "gui.improvableskills.improvescreen.attach": "Изучить",
+  "gui.improvableskills.improvescreen.lesspoints": "Недостаточно очков",
+  "gui.improvableskills.improvescreen.needtoattach": "Необходимо для изучения",
+  "gui.improvableskills.improvescreen.yourlevel": "Ваш уровень",
+  "gui.improvableskills.improvescreen.yourpoints": "Ваши очки",
+  "gui.improvableskills.improvescreen.upgrade": "Улучшить",
+  "gui.improvableskills.improvescreen.attached": "Изучено",
+  "gui.improvableskills.improveattributesscreen.title": "Улучшение атрибутов",
+  "gui.improvableskills.improveattributesscreen.apply": "Применить",
+  "gui.improvableskills.improveattributesscreen.need": "Необходимо",
+
+  "gui.improvableskills.other.points": "очков",
+  "gui.improvableskills.other.level": "урв"
+}

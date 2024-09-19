@@ -1,0 +1,31 @@
+{
+  "key.improvableskills.openscreen": "Open Skill Menu",
+  "category.improvableskills": "Improvable Skills",
+
+  "skill.improvableskills.miner_luck": "Miner's Luck",
+  "skill.improvableskills.miner_luck.desc": "Increases the chance of dropping additional ores when mining (e.g., a chance to mine an extra diamond).",
+  "skill.improvableskills.miner_luck_attribute_percent": "Chance Drop",
+  "skill.improvableskills.miner_luck_attribute_count": "Up Drop Count",
+
+  "skill.improvableskills.vampirism": "Vampirism",
+  "skill.improvableskills.vampirism.desc": "Chance to replenish health when killing a mob or player.",
+  "skill.improvableskills.vampirism_attribute_chance": "Chance Vampirism",
+  "skill.improvableskills.vampirism_attribute_percent": "Percent Replenish",
+
+  "gui.improvableskills.improvescreen.presstomore": "Press to learn more",
+  "gui.improvableskills.improvescreen.infoskill": "Skill Information",
+  "gui.improvableskills.improvescreen.attributes": "Attributes",
+  "gui.improvableskills.improvescreen.attach": "Learn",
+  "gui.improvableskills.improvescreen.lesspoints": "Not enough points",
+  "gui.improvableskills.improvescreen.needtoattach": "Required to learn",
+  "gui.improvableskills.improvescreen.yourlevel": "Your level",
+  "gui.improvableskills.improvescreen.yourpoints": "Your points",
+  "gui.improvableskills.improvescreen.upgrade": "Upgrade",
+  "gui.improvableskills.improvescreen.attached": "Learned",
+  "gui.improvableskills.improveattributesscreen.title": "Upgrade Attributes",
+  "gui.improvableskills.improveattributesscreen.apply": "Apply",
+  "gui.improvableskills.improveattributesscreen.need": "Required",
+
+  "gui.improvableskills.other.points": "points",
+  "gui.improvableskills.other.level": "lvl"
+}
