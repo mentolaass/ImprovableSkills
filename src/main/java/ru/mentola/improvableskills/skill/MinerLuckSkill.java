@@ -2,8 +2,7 @@ package ru.mentola.improvableskills.skill;
 
 import net.minecraft.text.Text;
 import ru.mentola.improvableskills.shared.Constants;
-import ru.mentola.improvableskills.skill.attribute.Attributes;
-import ru.mentola.improvableskills.skill.base.Skill;
+import ru.mentola.improvableskills.attribute.Attributes;
 
 import java.util.Set;
 
@@ -14,11 +13,12 @@ public final class MinerLuckSkill extends Skill {
                 Constants.MINER_LUCK_SKILL_TEX,
                 Text.translatable("skill.improvableskills.miner_luck"),
                 Text.translatable("skill.improvableskills.miner_luck.desc"),
-                1000,
-                1,
+                5000,
+                6,
                 Set.of(
-                        Attributes.MINER_LUCK_ATTRIBUTE_PERCENT.copy(false),
-                        Attributes.MINER_LUCK_ATTRIBUTE_COUNT.copy(false))
+                        Attributes.MINER_LUCK_ATTRIBUTE_PERCENT,
+                        Attributes.MINER_LUCK_ATTRIBUTE_COUNT
+                )
         );
     }
 }

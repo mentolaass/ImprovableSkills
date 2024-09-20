@@ -7,8 +7,8 @@ import ru.mentola.improvableskills.api.side.SideAPI;
 import ru.mentola.improvableskills.api.side.SidedAPI;
 import ru.mentola.improvableskills.data.Data;
 import ru.mentola.improvableskills.data.PlayerData;
-import ru.mentola.improvableskills.skill.attribute.Attribute;
-import ru.mentola.improvableskills.skill.base.Skill;
+import ru.mentola.improvableskills.attribute.Attribute;
+import ru.mentola.improvableskills.skill.Skill;
 
 public interface ImprovableSkillsAPI {
     /**

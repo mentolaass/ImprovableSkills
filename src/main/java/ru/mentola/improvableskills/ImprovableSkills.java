@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -20,25 +21,23 @@ import ru.mentola.improvableskills.api.ImprovableSkillsAPI;
 import ru.mentola.improvableskills.api.provider.ImprovableSkillsProvider;
 import ru.mentola.improvableskills.data.Data;
 import ru.mentola.improvableskills.data.PlayerData;
-import ru.mentola.improvableskills.data.client.provider.DataProvider;
-import ru.mentola.improvableskills.data.server.DataPersistentState;
-import ru.mentola.improvableskills.handler.client.HudRenderHandler;
-import ru.mentola.improvableskills.handler.server.BlockHandler;
-import ru.mentola.improvableskills.handler.server.EntityHandler;
+import ru.mentola.improvableskills.client.data.DataProvider;
+import ru.mentola.improvableskills.data.DataPersistentState;
+import ru.mentola.improvableskills.client.handler.HudRenderHandler;
+import ru.mentola.improvableskills.handler.BlockHandler;
+import ru.mentola.improvableskills.handler.EntityHandler;
 import ru.mentola.improvableskills.network.Network;
-import ru.mentola.improvableskills.network.payload.DataUpdatePayload;
-import ru.mentola.improvableskills.network.payload.PumpLevelPayload;
-import ru.mentola.improvableskills.network.payload.PumpSkillAttributePayload;
-import ru.mentola.improvableskills.network.payload.PumpSkillPayload;
+import ru.mentola.improvableskills.network.payload.*;
 import ru.mentola.improvableskills.network.payload.side.Side;
-import ru.mentola.improvableskills.screen.ImproveScreen;
-import ru.mentola.improvableskills.skill.MinerLuckSkill;
-import ru.mentola.improvableskills.skill.VampirismSkill;
-import ru.mentola.improvableskills.skill.attribute.Attribute;
-import ru.mentola.improvableskills.skill.attribute.Attributes;
-import ru.mentola.improvableskills.skill.base.Skill;
-import ru.mentola.improvableskills.skill.provider.AttributeProvider;
+import ru.mentola.improvableskills.client.notice.Notice;
+import ru.mentola.improvableskills.client.notice.NoticeQueue;
+import ru.mentola.improvableskills.client.screen.ImproveScreen;
+import ru.mentola.improvableskills.skill.*;
+import ru.mentola.improvableskills.attribute.Attribute;
+import ru.mentola.improvableskills.attribute.Attributes;
+import ru.mentola.improvableskills.attribute.provider.AttributeProvider;
 import ru.mentola.improvableskills.skill.provider.SkillProvider;
+import ru.mentola.improvableskills.client.sound.CustomSound;
 import ru.mentola.improvableskills.util.Util;
 
 public final class ImprovableSkills implements ClientModInitializer, ModInitializer, ImprovableSkillsAPI {
@@ -53,19 +52,36 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
     @Override
     public void onInitialize() {
         DataProvider.initialize();
+        CustomSound.initialize();
 
         Network.registerPayload(PumpSkillPayload.PAYLOAD_ID, PumpSkillPayload.PAYLOAD_PACKET_CODEC, Side.CLIENT);
         Network.registerPayload(PumpLevelPayload.PAYLOAD_ID, PumpLevelPayload.PAYLOAD_PACKET_CODEC, Side.CLIENT);
         Network.registerPayload(PumpSkillAttributePayload.PAYLOAD_ID, PumpSkillAttributePayload.PAYLOAD_PACKET_CODEC, Side.CLIENT);
         Network.registerPayload(DataUpdatePayload.PAYLOAD_ID, DataUpdatePayload.PAYLOAD_PACKET_CODEC, Side.SERVER);
+        Network.registerPayload(NoticePayload.PAYLOAD_ID, NoticePayload.PAYLOAD_PACKET_CODEC, Side.SERVER);
 
         SkillProvider.registerSkill(new MinerLuckSkill());
         SkillProvider.registerSkill(new VampirismSkill());
+        SkillProvider.registerSkill(new RabbitSkill());
+        SkillProvider.registerSkill(new MasterWeaponSkill());
+        SkillProvider.registerSkill(new CreedSkill());
+        SkillProvider.registerSkill(new BeholderSkill());
+        SkillProvider.registerSkill(new AikidoSkill());
+        SkillProvider.registerSkill(new FarmerSkill());
+        SkillProvider.registerSkill(new WoodCutterSkill());
+        SkillProvider.registerSkill(new FishBreathSkill());
+        SkillProvider.registerSkill(new HardnessSkill());
+        SkillProvider.registerSkill(new MerchantHandSkill());
+        SkillProvider.registerSkill(new EloquenceSkill());
+        SkillProvider.registerSkill(new StarNavigatorSkill());
 
-        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_COUNT.copy(false));
-        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_PERCENT.copy(false));
-        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_CHANCE.copy(false));
-        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH.copy(false));
+        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_COUNT);
+        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_PERCENT);
+        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_CHANCE);
+        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH);
+        AttributeProvider.registerAttribute(Attributes.RABBIT_ATTRIBUTE_POWER_JUMP);
+        AttributeProvider.registerAttribute(Attributes.RABBIT_ATTRIBUTE_SPEED);
+        AttributeProvider.registerAttribute(Attributes.MASTER_WEAPON_ATTRIBUTE_DAMAGE);
 
         ImprovableSkillsProvider.setAPI(this);
     }
@@ -77,6 +93,8 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
             if (playerData == null) throw new RuntimeException("Client Player Data Is Null");
             playerData.copyOf(payload.getPlayerData());
         });
+
+        Network.registerClientReceiver(NoticePayload.PAYLOAD_ID, (payload, context) -> NoticeQueue.addToQueue(new Notice(payload.getText(), payload.getIdentifier())));
 
         Network.registerServerReceiver(PumpSkillPayload.PAYLOAD_ID, (payload, context) -> {
             PlayerData playerData = DataPersistentState.getPlayerData(context.player());
@@ -117,6 +135,7 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
         final EntityHandler entityHandler = new EntityHandler();
         ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register(entityHandler);
         ServerPlayConnectionEvents.JOIN.register(entityHandler);
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register(entityHandler);
         final BlockHandler blockHandler = new BlockHandler();
         PlayerBlockBreakEvents.AFTER.register(blockHandler);
         final HudRenderHandler hudRenderHandler = new HudRenderHandler();

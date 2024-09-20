@@ -12,6 +12,45 @@
   "skill.improvableskills.vampirism_attribute_chance": "Chance Vampirism",
   "skill.improvableskills.vampirism_attribute_percent": "Percent Replenish",
 
+  "skill.improvableskills.rabbit": "Rabbit",
+  "skill.improvableskills.rabbit.desc": "Increases player speed and jump boost.",
+  "skill.improvableskills.rabbit_attribute_power_jump": "Jump Power",
+  "skill.improvableskills.rabbit_attribute_speed": "Speed",
+
+  "skill.improvableskills.master_weapon": "Weapon Master",
+  "skill.improvableskills.master_weapon.desc": "All weapons gain +0.2 damage per attribute level. Exception: Axe.",
+  "skill.improvableskills.master_weapon_attribute_damage": "Damage Increase",
+
+  "skill.improvableskills.beholder": "Watcher",
+  "skill.improvableskills.beholder.desc": "Bow/Crossbow damage is increased, and you see better at night.",
+
+  "skill.improvableskills.farmer": "Farmer",
+  "skill.improvableskills.farmer.desc": "You harvest crops more efficiently and get a discount from villagers who sell food.",
+
+  "skill.improvableskills.woodcutter": "Woodcutter",
+  "skill.improvableskills.woodcutter.desc": "Cuts wood faster. (Only wood) Increased axe damage and durability.",
+
+  "skill.improvableskills.fishbreath": "Fish Breath",
+  "skill.improvableskills.fishbreath.desc": "Improved maneuverability in water and longer underwater breathing time.",
+
+  "skill.improvableskills.starnavigator": "Star Navigator",
+  "skill.improvableskills.starnavigator.desc": "Reduces food consumption and lowers the chance of encountering phantoms.",
+
+  "skill.improvableskills.creed": "Creed",
+  "skill.improvableskills.creed.desc": "You gain a chance to dodge, reducing incoming damage.",
+
+  "skill.improvableskills.hardness": "Hardness",
+  "skill.improvableskills.hardness.desc": "You gain minor damage resistance.",
+
+  "skill.improvableskills.eloquence": "Eloquence",
+  "skill.improvableskills.eloquence.desc": "You get a discount from villagers.",
+
+  "skill.improvableskills.merchanthand": "Merchant's Hand",
+  "skill.improvableskills.merchanthand.desc": "After gathering resources, they automatically appear in your inventory.",
+
+  "skill.improvableskills.aikido": "Aikido",
+  "skill.improvableskills.aikido.desc": "Has a chance to reflect damage back to the attacker, dealing some damage to them.",
+
   "gui.improvableskills.improvescreen.presstomore": "Press to learn more",
   "gui.improvableskills.improvescreen.infoskill": "Skill Information",
   "gui.improvableskills.improvescreen.attributes": "Attributes",
@@ -27,5 +66,9 @@
   "gui.improvableskills.improveattributesscreen.need": "Required",
 
   "gui.improvableskills.other.points": "points",
-  "gui.improvableskills.other.level": "lvl"
+  "gui.improvableskills.other.level": "lvl",
+
+  "sound.improvableskills.sound.up_attribute": "Up Attribute",
+  "sound.improvableskills.sound.up_level": "Up Level",
+  "sound.improvableskills.sound.attach_skill": "Attach Skill"
 }

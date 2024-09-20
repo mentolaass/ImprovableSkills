@@ -1,13 +1,13 @@
 package ru.mentola.improvableskills.skill.provider;
 
-import lombok.Getter;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import ru.mentola.improvableskills.skill.base.Skill;
-import ru.mentola.improvableskills.skill.attribute.Attribute;
+import ru.mentola.improvableskills.attribute.provider.AttributeProvider;
+import ru.mentola.improvableskills.skill.Skill;
+import ru.mentola.improvableskills.attribute.Attribute;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,7 +31,7 @@ public final class SkillProvider {
     }
 
     public static void registerSkill(Skill skill) {
-        skills.add(skill);
+        skills.add(skill.copy());
     }
 
     public static void unregisterSkill(Identifier id) {

@@ -1,0 +1,20 @@
+{
+  "up_attribute": {
+    "subtitle": "sound.improvableskills.sound.up_attribute",
+    "sounds": [
+      "improvableskills:up_attribute"
+    ]
+  },
+  "up_level": {
+    "subtitle": "sound.improvableskills.sound.up_level",
+    "sounds": [
+      "improvableskills:up_level"
+    ]
+  },
+  "attach_skill": {
+    "subtitle": "sound.improvableskills.sound.attach_skill",
+    "sounds": [
+      "improvableskills:attach_skill"
+    ]
+  }
+}

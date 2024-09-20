@@ -6,7 +6,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import ru.mentola.improvableskills.data.PlayerData;
-import ru.mentola.improvableskills.skill.attribute.Attribute;
+import ru.mentola.improvableskills.attribute.Attribute;
 
 import java.util.HashSet;
 import java.util.Random;

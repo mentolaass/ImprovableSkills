@@ -1,8 +1,6 @@
 package ru.mentola.improvableskills.data;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +10,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import ru.mentola.improvableskills.skill.attribute.Attribute;
-import ru.mentola.improvableskills.skill.base.Skill;
+import ru.mentola.improvableskills.attribute.Attribute;
+import ru.mentola.improvableskills.skill.Skill;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public final class PlayerData implements Data {
     @SerializedName("points")
-    private int points = 0;
+    private int points = 10000000;
     @SerializedName("level")
     private int level = 1;
     @SerializedName("skills")

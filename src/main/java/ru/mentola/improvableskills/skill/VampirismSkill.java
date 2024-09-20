@@ -2,8 +2,7 @@ package ru.mentola.improvableskills.skill;
 
 import net.minecraft.text.Text;
 import ru.mentola.improvableskills.shared.Constants;
-import ru.mentola.improvableskills.skill.attribute.Attributes;
-import ru.mentola.improvableskills.skill.base.Skill;
+import ru.mentola.improvableskills.attribute.Attributes;
 
 import java.util.Set;
 
