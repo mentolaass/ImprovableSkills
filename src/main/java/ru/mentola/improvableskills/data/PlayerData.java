@@ -13,7 +13,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import ru.mentola.improvableskills.skill.attribute.Attribute;
-import ru.mentola.improvableskills.skill.attribute.NumberAttribute;
 import ru.mentola.improvableskills.skill.base.Skill;
 
 import java.util.HashSet;

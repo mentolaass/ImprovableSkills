@@ -1,28 +1,38 @@
 package ru.mentola.improvableskills.skill.provider;
 
+import lombok.Getter;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import ru.mentola.improvableskills.shared.Constants;
 import ru.mentola.improvableskills.skill.attribute.Attribute;
-import ru.mentola.improvableskills.skill.attribute.Attributes;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class AttributeProvider {
+    private static final Set<Attribute<?>> attributes = new HashSet<>();
+
     public AttributeProvider() {
         throw new RuntimeException("Unsupported");
     }
 
     @Nullable
     public static Attribute<?> getById(Identifier id) {
-        if (id.equals(Constants.MINER_LUCK_ATTRIBUTE_PERCENT))
-            return Attributes.MINER_LUCK_ATTRIBUTE_PERCENT.copy();
-        if (id.equals(Constants.MINER_LUCK_ATTRIBUTE_COUNT))
-            return Attributes.MINER_LUCK_ATTRIBUTE_COUNT.copy();
-        if (id.equals(Constants.VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH))
-            return Attributes.VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH.copy();
-        if (id.equals(Constants.VAMPIRISM_ATTRIBUTE_CHANCE))
-            return Attributes.VAMPIRISM_ATTRIBUTE_CHANCE.copy();
-        return null;
+        Attribute<?> tempAttribute = attributes.stream()
+                .filter((attribute) -> attribute.getIdentifier().equals(id))
+                .findFirst()
+                .orElse(null);
+        if (tempAttribute == null) return null;
+        return tempAttribute.copy(false);
+    }
+
+    public static <T extends Attribute<?>> void registerAttribute(T attribute) {
+        attributes.add(attribute);
+    }
+
+    public static void unregisterAttribute(Identifier id) {
+        attributes.removeIf((attribute) -> attribute.getIdentifier().equals(id));
     }
 
     @Nullable
@@ -33,5 +43,9 @@ public final class AttributeProvider {
         if (attribute == null) return null;
         attribute.setLevel(level);
         return attribute;
+    }
+
+    public static Set<Attribute<?>> getAttributes() {
+        return Collections.unmodifiableSet(attributes);
     }
 }

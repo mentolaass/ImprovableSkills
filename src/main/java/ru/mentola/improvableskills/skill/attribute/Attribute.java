@@ -21,6 +21,7 @@ public abstract class Attribute<T> implements Data {
     @Expose private final T minValue;
     @Expose private final T maxValue;
     @Expose private final T stepLevel;
+    @Expose private final int price;
     @Expose private final Text name;
     @SerializedName("type")
     private final AttributeType type;
@@ -35,7 +36,7 @@ public abstract class Attribute<T> implements Data {
         return nbtCompound;
     }
 
-    public abstract Attribute<T> copy();
+    public abstract Attribute<T> copy(boolean saveLevel);
 
     @Override
     public String toString() {

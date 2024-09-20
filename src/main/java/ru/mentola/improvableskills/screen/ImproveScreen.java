@@ -6,18 +6,16 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import ru.mentola.improvableskills.ImprovableSkills;
 import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.data.client.provider.DataProvider;
 import ru.mentola.improvableskills.network.Network;
+import ru.mentola.improvableskills.network.payload.PumpLevelPayload;
 import ru.mentola.improvableskills.network.payload.PumpSkillPayload;
 import ru.mentola.improvableskills.screen.element.SkillElement;
 import ru.mentola.improvableskills.shared.Constants;
-import ru.mentola.improvableskills.skill.MinerLuckSkill;
-import ru.mentola.improvableskills.skill.VampirismSkill;
 import ru.mentola.improvableskills.skill.base.Skill;
 import ru.mentola.improvableskills.skill.attribute.Attribute;
+import ru.mentola.improvableskills.skill.provider.SkillProvider;
 import ru.mentola.improvableskills.util.RenderUtil;
 import ru.mentola.improvableskills.util.Util;
 
@@ -39,13 +37,24 @@ public final class ImproveScreen extends Screen {
     private long horizontalAnimationLastUpdateTime = 0;
     private int horizontalAnimationPosition = 0;
 
+    // up level animation
+    private boolean upAnimation = false;
+    private long upAnimationStartTime = 0;
+    private final int upAnimationDuration = 750;
+    private final int numberOfSquares = 100;
+    private final int squareSize = 1;
+    private final int maxDistance = 200;
+    private final Point[] squarePositions = new Point[numberOfSquares];
+    private final double[] velocitiesX = new double[numberOfSquares];
+    private final double[] velocitiesY = new double[numberOfSquares];
+
     public ImproveScreen() {
         super(Text.of("Improve Screen"));
 
-        this.skillElements = List.of(
-                new SkillElement(Identifier.of(ImprovableSkills.MOD_ID, "textures/skill_luck_miner_tex.png"), new MinerLuckSkill()),
-                new SkillElement(Identifier.of(ImprovableSkills.MOD_ID, "textures/skill_luck_miner_tex.png"), new VampirismSkill())
-        );
+        this.skillElements = SkillProvider.getSkills()
+                .stream()
+                .map((skill) -> new SkillElement(skill.getTex(), skill))
+                .toList();
     }
 
     @Override
@@ -63,7 +72,7 @@ public final class ImproveScreen extends Screen {
         context.enableScissor(0, 0, (int) scaledWidth, (int) scaledHeight);
         this.renderTreeArea(context, scaledHeight, scaledWidth, mouseX, mouseY);
         context.disableScissor();
-        this.renderInfo(context, scaledHeight, scaledWidth);
+        this.renderInfo(context, mouseX, mouseY, scaledHeight, scaledWidth);
     }
 
     @Override
@@ -74,8 +83,8 @@ public final class ImproveScreen extends Screen {
         double scaledWidth = MinecraftClient.getInstance()
                 .getWindow()
                 .getScaledWidth();
+        PlayerData playerData = DataProvider.get(PlayerData.class);
         if (Util.pointedTo(scaledWidth - 170, scaledHeight - 220, 150, 200, mouseX, mouseY)) {
-            PlayerData playerData = DataProvider.get(PlayerData.class);
             if (playerData != null && selectedSkill != null) {
                 if (Util.pointedTo(scaledWidth - 160, scaledHeight - 50, 130, 20, mouseX, mouseY)
                         && button == 0) {
@@ -92,6 +101,18 @@ public final class ImproveScreen extends Screen {
             }
             return super.mouseClicked(mouseX, mouseY, button);
         }
+        if (playerData != null) {
+            Text pointsText = Text.of(Constants.YOUR_POINTS.getString() + ": " + playerData.getPoints());
+            Text levelText = Text.of(Constants.YOUR_LEVEL.getString() + ": " + playerData.getLevel());
+            int maxWidth = Math.max(textRenderer.getWidth(pointsText), textRenderer.getWidth(levelText));
+            if (Util.pointedTo(25 + maxWidth, 10, 32, 32, mouseX, mouseY)) {
+                if (Util.getNextPointsToNextLevelNeed(playerData) < playerData.getPoints()) {
+                    Network.send(new PumpLevelPayload());
+                    upAnimation = true;
+                }
+                return super.mouseClicked(mouseX, mouseY, button);
+            }
+        }
         if (button == 0
                 && movedSkill == null) {
             this.isDragging = true;
@@ -102,8 +123,8 @@ public final class ImproveScreen extends Screen {
             int startX = (int) (offsetX);
             int startY = (int) (offsetY);
             int position = 0;
-            for (int y = 100; y < MinecraftClient.getInstance().getWindow().getScaledHeight() - 100; y+=50) {
-                for (int x = 100; x < MinecraftClient.getInstance().getWindow().getScaledWidth() - 100; x+=50) {
+            for (int y = 100; y < MinecraftClient.getInstance().getWindow().getScaledHeight() - 100; y+=96) {
+                for (int x = 100; x < MinecraftClient.getInstance().getWindow().getScaledWidth() - 100; x+=96) {
                     if (Util.pointedTo(startX + x, startY + y, 32, 32, mouseX, mouseY)) {
                         SkillElement skillElement = skillElements.get(position);
                         skillElement.mouseClicked(button);
@@ -145,26 +166,29 @@ public final class ImproveScreen extends Screen {
 
     private void renderTreeArea(DrawContext context, double scaledHeight, double scaledWidth, int mouseX, int mouseY) {
         movedSkill = null;
+        int movedX = 0;
         if (!skillElements.isEmpty()) {
             int startX = (int) (offsetX);
             int startY = (int) (offsetY);
             int position = 0;
-            for (int y = 100; y < scaledHeight - 100; y+=50) {
-                for (int x = 100; x < scaledWidth - 100; x+=50) {
+            for (int y = 100; y < scaledHeight - 100; y+=96) {
+                for (int x = 100; x < scaledWidth - 100; x+=96) {
                     SkillElement element = skillElements.get(position);
                     if (Util.pointedTo(startX + x, startY + y, 32, 32, mouseX, mouseY)) {
                         movedSkill = element;
-                        if (selectedSkill != movedSkill) {
-                            // render info
-                            RenderUtil.renderRectangle(context, startX + x + 40, mouseY - 30 / 2, 200, 30, new Color(40, 40, 40, 200));
-                            context.drawText(MinecraftClient.getInstance().textRenderer, Constants.PRESS_TO_MORE, (int) (startX + x + 40 + (double) 200 / 2) - textRenderer.getWidth(Constants.PRESS_TO_MORE) / 2, (int) ((mouseY - 30 / 2) + 10), new Color(190, 190, 190).getRGB(), false);
-                            RenderUtil.renderBorder(context, startX + x + 40, mouseY - 30 / 2, 200, 30, 1, new Color(50, 50, 50));
-                        }
+                        movedX = x;
                     }
                     element.render(context, startX + x, startY + y, selectedSkill == element);
                     position++;
-                    if (position == skillElements.size()) return;
+                    if (position == skillElements.size()) break;
                 }
+                if (position == skillElements.size()) break;
+            }
+            if (movedSkill != selectedSkill
+                    && movedSkill != null) {
+                RenderUtil.renderRectangle(context, startX + movedX + 40, mouseY - 30 / 2, 200, 30, new Color(40, 40, 40, 200));
+                context.drawText(MinecraftClient.getInstance().textRenderer, Constants.PRESS_TO_MORE, (int) (startX + movedX + 40 + (double) 200 / 2) - textRenderer.getWidth(Constants.PRESS_TO_MORE) / 2, (int) ((mouseY - 30 / 2) + 10), new Color(190, 190, 190).getRGB(), false);
+                RenderUtil.renderBorder(context, startX + movedX + 40, mouseY - 30 / 2, 200, 30, 1, new Color(50, 50, 50));
             }
         }
     }
@@ -186,10 +210,10 @@ public final class ImproveScreen extends Screen {
             horizontalAnimationPosition = 0;
     }
 
-    private void renderInfo(DrawContext context, double scaledHeight, double scaledWidth) {
+    private void renderInfo(DrawContext context, double mouseX, double mouseY, double scaledHeight, double scaledWidth) {
         PlayerData playerData = DataProvider.get(PlayerData.class);
         if (playerData != null) {
-            this.renderLevelAndPointsInfo(context, playerData);
+            this.renderLevelAndPointsInfo(context, playerData, mouseX, mouseY);
             RenderUtil.renderRectangle(context, scaledWidth - 170, scaledHeight - 220, 150, 200, new Color(40, 40, 40, 200));
             RenderUtil.renderRectangle(context, scaledWidth - 170, scaledHeight - 220, 150, 20, new Color(30, 30, 30, 200));
             Text title = selectedSkill == null ? Constants.INFO_SKILL : selectedSkill.getSkill().getName();
@@ -222,7 +246,7 @@ public final class ImproveScreen extends Screen {
     private void renderAttachSkillButtonAndInfo(DrawContext context, PlayerData playerData, double scaledHeight, double scaledWidth) {
         boolean hasExistsSkill = playerData.containsSkill(this.selectedSkill.getSkill().getId());
         int alpha = hasExistsSkill ? 50 : (playerData.getPoints() < this.selectedSkill.getSkill().getPricePoints() ? 50 : 200);
-        Text text = hasExistsSkill ? Constants.ATTACHED : (this.selectedSkill.getSkill().getPricePoints() < playerData.getPoints() ? Constants.ATTACH : Constants.LESS_POINTS);
+        Text text = hasExistsSkill ? Constants.ATTACHED : (this.selectedSkill.getSkill().getPricePoints() <= playerData.getPoints() ? Constants.ATTACH : Constants.LESS_POINTS);
         RenderUtil.renderRectangle(context, scaledWidth - 160, scaledHeight - 50, 130, 20, new Color(30, 30, 30, alpha));
         RenderUtil.renderBorder(context, scaledWidth - 160, scaledHeight - 50, 130, 20, 1, new Color(50, 50, 50, alpha));
         context.drawText(MinecraftClient.getInstance().textRenderer, text, (int) (scaledWidth - 160 + (double) 130 / 2) - textRenderer.getWidth(text) / 2, (int) (scaledHeight - 43), new Color(190, 190, 190, alpha).getRGB(), false);
@@ -238,7 +262,7 @@ public final class ImproveScreen extends Screen {
         }
     }
 
-    private void renderLevelAndPointsInfo(DrawContext context, PlayerData playerData) {
+    private void renderLevelAndPointsInfo(DrawContext context, PlayerData playerData, double mouseX, double mouseY) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         Text pointsText = Text.of(Constants.YOUR_POINTS.getString() + ": " + playerData.getPoints());
         Text levelText = Text.of(Constants.YOUR_LEVEL.getString() + ": " + playerData.getLevel());
@@ -247,5 +271,45 @@ public final class ImproveScreen extends Screen {
         RenderUtil.renderBorder(context, 10, 10, maxWidth + 10, textRenderer.fontHeight + 23, 1.0, new Color(50, 50, 50));
         context.drawText(MinecraftClient.getInstance().textRenderer, pointsText, 15, 15, new Color(190, 190, 190).getRGB(), false);
         context.drawText(MinecraftClient.getInstance().textRenderer, levelText, 15, 20 + textRenderer.fontHeight, new Color(190, 190, 190).getRGB(), false);
+        // render up level btn
+        int alpha = Util.getNextPointsToNextLevelNeed(playerData) <= playerData.getPoints() ? 200 : 50;
+        RenderUtil.renderRectangle(context, 25 + maxWidth, 10, 32, 32, new Color(40, 40, 40, alpha));
+        RenderUtil.renderBorder(context, 25 + maxWidth, 10, 32, 32, 1.0, new Color(50, 50, 50, alpha));
+        context.drawText(MinecraftClient.getInstance().textRenderer, Text.of("UP!"), ((25 + maxWidth) + 32 / 2) - textRenderer.getWidth(Text.of("UP!")) / 2, 13 + textRenderer.fontHeight, new Color(190, 190, 190, alpha).getRGB(), false);
+        if (Util.pointedTo(25 + maxWidth, 10, 32, 32, mouseX, mouseY)) {
+            RenderUtil.renderRectangle(context, 25 + maxWidth + 40, mouseY - 30 / 2, 150, 30, new Color(40, 40, 40, 200));
+            String text;
+            if (Util.getNextPointsToNextLevelNeed(playerData) > playerData.getPoints()) {
+                text = Constants.NEED.getString() + " " + Util.getNextPointsToNextLevelNeed(playerData) + " " + Constants.POINTS.getString();
+            } else {
+                text = Constants.UPGRADE.getString();
+            }
+            context.drawText(MinecraftClient.getInstance().textRenderer, text, (int) (25 + maxWidth + 40 + (double) 150 / 2) - textRenderer.getWidth(text) / 2, (int) ((mouseY - 30 / 2) + 10), new Color(190, 190, 190).getRGB(), false);
+            RenderUtil.renderBorder(context, 25 + maxWidth + 40, mouseY - 30 / 2, 150, 30, 1, new Color(50, 50, 50));
+        }
+        // render up animation
+        if (upAnimation) {
+            if (upAnimationStartTime == 0) {
+                upAnimationStartTime = System.currentTimeMillis();
+                for (int i = 0; i < numberOfSquares; i++) {
+                    squarePositions[i] = new Point((int) mouseX, (int) mouseY);
+                    velocitiesX[i] = (Math.random() * 2 - 1) * Util.randomNumber(maxDistance, 10) / upAnimationDuration;
+                    velocitiesY[i] = (Math.random() * 2 - 1) * Util.randomNumber(maxDistance, 10) / upAnimationDuration;
+                }
+            }
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - upAnimationStartTime;
+            if (elapsedTime < upAnimationDuration) {
+                for (int i = 0; i < numberOfSquares; i++) {
+                    int x = (int) (squarePositions[i].x + velocitiesX[i] * elapsedTime);
+                    int y = (int) (squarePositions[i].y + velocitiesY[i] * elapsedTime);
+                    int alpha_ = 255 - (int) (255 * ((double) elapsedTime / upAnimationDuration));
+                    RenderUtil.renderRectangle(context, x, y, squareSize, squareSize, new Color(255, 255, 255, alpha_));
+                }
+            } else {
+                upAnimation = false;
+                upAnimationStartTime = 0;
+            }
+        }
     }
 }

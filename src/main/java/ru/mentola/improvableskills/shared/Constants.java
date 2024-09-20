@@ -7,15 +7,14 @@ import ru.mentola.improvableskills.ImprovableSkills;
 public final class Constants {
     // skills
     public static final Identifier MINER_LUCK_SKILL = Identifier.of(ImprovableSkills.MOD_ID, "miner_luck_skill");
+    public static final Identifier MINER_LUCK_SKILL_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/skill_luck_miner_tex.png");
     public static final Identifier MINER_LUCK_ATTRIBUTE_PERCENT = Identifier.of(ImprovableSkills.MOD_ID,"miner_luck_attribute_percent");
     public static final Identifier MINER_LUCK_ATTRIBUTE_COUNT = Identifier.of(ImprovableSkills.MOD_ID,"miner_luck_attribute_count");
 
     public static final Identifier VAMPIRISM_SKILL = Identifier.of(ImprovableSkills.MOD_ID, "vampirism_skill");
+    public static final Identifier VAMPIRISM_SKILL_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/skill_luck_miner_tex.png");
     public static final Identifier VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH = Identifier.of(ImprovableSkills.MOD_ID,"vampirism_attribute_percent");
     public static final Identifier VAMPIRISM_ATTRIBUTE_CHANCE = Identifier.of(ImprovableSkills.MOD_ID,"vampirism_attribute_chance");
-
-    // attributes
-    public static final int LEVEL_UP_ATTRIBUTE_PRICE = 15000;
 
     // translates
     public static final Text UPGRADE_ATTRIBUTES = Text.translatable("gui.improvableskills.improveattributesscreen.title");

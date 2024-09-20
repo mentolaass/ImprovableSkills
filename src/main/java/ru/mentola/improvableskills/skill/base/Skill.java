@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class Skill implements Data {
     @SerializedName("id")
     private final Identifier id;
+    @Expose private final Identifier tex;
     @Expose private final Text name;
     @Expose private final Text description;
     @Expose private final int pricePoints;
@@ -73,6 +74,18 @@ public class Skill implements Data {
                 String.join(",", this.attributes.stream()
                         .map(Object::toString)
                         .collect(Collectors.toSet())));
+    }
+
+    public Skill copy() {
+        return new Skill(this.id,
+                this.tex,
+                this.name,
+                this.description,
+                this.pricePoints,
+                this.needLevel,
+                this.attributes.stream()
+                        .map((attribute) -> attribute.copy(false))
+                        .collect(Collectors.toSet()));
     }
 
     public static class Deserializer implements JsonDeserializer<Skill> {

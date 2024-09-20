@@ -14,6 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import ru.mentola.improvableskills.api.ImprovableSkillsAPI;
 import ru.mentola.improvableskills.api.provider.ImprovableSkillsProvider;
@@ -26,13 +27,19 @@ import ru.mentola.improvableskills.handler.server.BlockHandler;
 import ru.mentola.improvableskills.handler.server.EntityHandler;
 import ru.mentola.improvableskills.network.Network;
 import ru.mentola.improvableskills.network.payload.DataUpdatePayload;
+import ru.mentola.improvableskills.network.payload.PumpLevelPayload;
 import ru.mentola.improvableskills.network.payload.PumpSkillAttributePayload;
 import ru.mentola.improvableskills.network.payload.PumpSkillPayload;
 import ru.mentola.improvableskills.network.payload.side.Side;
 import ru.mentola.improvableskills.screen.ImproveScreen;
-import ru.mentola.improvableskills.shared.Constants;
+import ru.mentola.improvableskills.skill.MinerLuckSkill;
+import ru.mentola.improvableskills.skill.VampirismSkill;
+import ru.mentola.improvableskills.skill.attribute.Attribute;
+import ru.mentola.improvableskills.skill.attribute.Attributes;
 import ru.mentola.improvableskills.skill.base.Skill;
+import ru.mentola.improvableskills.skill.provider.AttributeProvider;
 import ru.mentola.improvableskills.skill.provider.SkillProvider;
+import ru.mentola.improvableskills.util.Util;
 
 public final class ImprovableSkills implements ClientModInitializer, ModInitializer, ImprovableSkillsAPI {
     public static final String MOD_ID = "improvableskills";
@@ -48,8 +55,17 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
         DataProvider.initialize();
 
         Network.registerPayload(PumpSkillPayload.PAYLOAD_ID, PumpSkillPayload.PAYLOAD_PACKET_CODEC, Side.CLIENT);
+        Network.registerPayload(PumpLevelPayload.PAYLOAD_ID, PumpLevelPayload.PAYLOAD_PACKET_CODEC, Side.CLIENT);
         Network.registerPayload(PumpSkillAttributePayload.PAYLOAD_ID, PumpSkillAttributePayload.PAYLOAD_PACKET_CODEC, Side.CLIENT);
         Network.registerPayload(DataUpdatePayload.PAYLOAD_ID, DataUpdatePayload.PAYLOAD_PACKET_CODEC, Side.SERVER);
+
+        SkillProvider.registerSkill(new MinerLuckSkill());
+        SkillProvider.registerSkill(new VampirismSkill());
+
+        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_COUNT.copy(false));
+        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_PERCENT.copy(false));
+        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_CHANCE.copy(false));
+        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH.copy(false));
 
         ImprovableSkillsProvider.setAPI(this);
     }
@@ -70,7 +86,16 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
             if (playerData.getPoints() < skill.getPricePoints()
                     || playerData.getLevel() < skill.getNeedLevel()) return;
             playerData.setPoints(playerData.getPoints() - skill.getPricePoints());
-            playerData.attachSkill(skill);
+            playerData.attachSkill(skill.copy());
+            Network.sendTo(context.player(), new DataUpdatePayload(playerData));
+        });
+
+        Network.registerServerReceiver(PumpLevelPayload.PAYLOAD_ID, (payload, context) -> {
+            PlayerData playerData = DataPersistentState.getPlayerData(context.player());
+            int need = Util.getNextPointsToNextLevelNeed(playerData);
+            if (playerData.getPoints() < need) return;
+            playerData.setPoints(playerData.getPoints() - need);
+            playerData.setLevel(playerData.getLevel() + 1);
             Network.sendTo(context.player(), new DataUpdatePayload(playerData));
         });
 
@@ -80,9 +105,10 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
             Skill skill = playerData.getSkill(payload.getIdSkill());
             if (skill == null) return;
             if (!skill.containsAttribute(payload.getIdAttribute())) return;
-            if (playerData.getPoints() < Constants.LEVEL_UP_ATTRIBUTE_PRICE) return;
+            int price = skill.getAttribute(payload.getIdAttribute()).getPrice();
+            if (playerData.getPoints() < price) return;
             if (skill.upgradeAttribute(payload.getIdAttribute())) {
-                playerData.setPoints(playerData.getPoints() - Constants.LEVEL_UP_ATTRIBUTE_PRICE);
+                playerData.setPoints(playerData.getPoints() - price);
                 Network.sendTo(context.player(), new DataUpdatePayload(playerData));
             }
         });
@@ -114,5 +140,25 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
         if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
             throw new RuntimeException("You use clientbound api method in serverbound");
         return DataProvider.get(target);
+    }
+
+    @Override
+    public void registerSkill(Skill skill) {
+        SkillProvider.registerSkill(skill);
+    }
+
+    @Override
+    public void unregisterSkill(Identifier id) {
+        SkillProvider.unregisterSkill(id);
+    }
+
+    @Override
+    public void registerAttribute(Attribute<?> attribute) {
+        AttributeProvider.registerAttribute(attribute);
+    }
+
+    @Override
+    public void unregisterAttribute(Identifier id) {
+        AttributeProvider.unregisterAttribute(id);
     }
 }

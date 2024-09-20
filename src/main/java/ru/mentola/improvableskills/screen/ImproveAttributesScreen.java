@@ -68,7 +68,7 @@ public final class ImproveAttributesScreen extends Screen {
         for (Attribute<?> tempAttribute : tempAttributes) {
             Attribute<?> skillAttribute = skill.getAttribute(tempAttribute.getIdentifier());
             context.drawText(MinecraftClient.getInstance().textRenderer,
-                    Text.of(tempAttribute.getName().getString() + " -> +" + ((int) Util.getNumberValueAttribute((NumberAttribute)tempAttribute) - (int) Util.getNumberValueAttribute((NumberAttribute)skillAttribute))),
+                    Text.of(tempAttribute.getName().getString() + " +" + ((int) tempAttribute.getLevel() - skillAttribute.getLevel())),
                     (int) (x + 10),
                     (int) (y + 20 + textY),
                     new Color(190, 190, 190).getRGB(),
@@ -164,7 +164,7 @@ public final class ImproveAttributesScreen extends Screen {
         int points = 0;
         for (Attribute<?> tempAttribute : tempAttributes) {
             Attribute<?> attribute = playerData.getSkill(this.skill.getId()).getAttribute(tempAttribute.getIdentifier());
-            points += (tempAttribute.getLevel() - attribute.getLevel()) * Constants.LEVEL_UP_ATTRIBUTE_PRICE;
+            points += (tempAttribute.getLevel() - attribute.getLevel()) * attribute.getPrice();
         }
         return points;
     }

@@ -5,9 +5,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.skill.attribute.Attribute;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @UtilityClass
@@ -18,7 +20,7 @@ public class Util {
 
     public Set<Attribute<?>> copyAttributes(Set<Attribute<?>> t) {
         Set<Attribute<?>> attributes = new HashSet<>();
-        t.forEach((attribute) -> attributes.add(attribute.copy()));
+        t.forEach((attribute) -> attributes.add(attribute.copy(true)));
         return attributes;
     }
 
@@ -75,5 +77,13 @@ public class Util {
         double maxValue = attribute.getMaxValue().doubleValue();
         double stepLevel = attribute.getStepLevel().doubleValue();
         return (int) ((maxValue - minValue) / stepLevel);
+    }
+
+    public int randomNumber(int max, int min) {
+        return new Random().nextInt((max - min) + 1) + min;
+    }
+
+    public int getNextPointsToNextLevelNeed(PlayerData playerData) {
+        return (int) ((10000 * playerData.getLevel()) * 1.5);
     }
 }
