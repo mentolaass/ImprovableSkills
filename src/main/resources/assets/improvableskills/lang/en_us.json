@@ -51,7 +51,6 @@
   "skill.improvableskills.aikido": "Aikido",
   "skill.improvableskills.aikido.desc": "Has a chance to reflect damage back to the attacker, dealing some damage to them.",
 
-  "gui.improvableskills.improvescreen.presstomore": "Press to learn more",
   "gui.improvableskills.improvescreen.infoskill": "Skill Information",
   "gui.improvableskills.improvescreen.attributes": "Attributes",
   "gui.improvableskills.improvescreen.attach": "Learn",

@@ -5,7 +5,11 @@ import net.minecraft.util.Identifier;
 import ru.mentola.improvableskills.ImprovableSkills;
 
 public final class Constants {
-    public static final Identifier POINTS_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/point/point_tex.png");
+    public static final Identifier POINTS_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/ui/point_tex.png");
+    public static final Identifier WARNING_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/ui/warning_tex.png");
+    public static final Identifier LEVEL_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/ui/level_tex.png");
+    public static final Identifier ATTRIBUTE_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/ui/attribute_tex.png");
+    public static final Identifier DESCRIPTION_TEX = Identifier.of(ImprovableSkills.MOD_ID, "textures/ui/description_tex.png");
 
     // skills
     public static final Identifier MINER_LUCK_SKILL = Identifier.of(ImprovableSkills.MOD_ID, "miner_luck_skill");
@@ -59,7 +63,6 @@ public final class Constants {
 
     // translates
     public static final Text UPGRADE_ATTRIBUTES = Text.translatable("gui.improvableskills.improveattributesscreen.title");
-    public static final Text PRESS_TO_MORE = Text.translatable("gui.improvableskills.improvescreen.presstomore");
     public static final Text INFO_SKILL = Text.translatable("gui.improvableskills.improvescreen.infoskill");
     public static final Text ATTRIBUTES = Text.translatable("gui.improvableskills.improvescreen.attributes");
     public static final Text ATTACHED = Text.translatable("gui.improvableskills.improvescreen.attached");

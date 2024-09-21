@@ -22,7 +22,7 @@ public final class PlayerData implements Data {
     @SerializedName("points")
     private int points = 10000000;
     @SerializedName("level")
-    private int level = 1;
+    private int level = 200;
     @SerializedName("skills")
     private Set<Skill> skillSet = new HashSet<>();
 

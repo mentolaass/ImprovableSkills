@@ -19,6 +19,7 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import ru.mentola.improvableskills.api.ImprovableSkillsAPI;
 import ru.mentola.improvableskills.api.provider.ImprovableSkillsProvider;
+import ru.mentola.improvableskills.client.screen.ImproveScreen;
 import ru.mentola.improvableskills.data.Data;
 import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.client.data.DataProvider;
@@ -31,7 +32,6 @@ import ru.mentola.improvableskills.network.payload.*;
 import ru.mentola.improvableskills.network.payload.side.Side;
 import ru.mentola.improvableskills.client.notice.Notice;
 import ru.mentola.improvableskills.client.notice.NoticeQueue;
-import ru.mentola.improvableskills.client.screen.ImproveScreen;
 import ru.mentola.improvableskills.skill.*;
 import ru.mentola.improvableskills.attribute.Attribute;
 import ru.mentola.improvableskills.attribute.Attributes;
@@ -159,6 +159,13 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
         if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
             throw new RuntimeException("You use clientbound api method in serverbound");
         return DataProvider.get(target);
+    }
+
+    @Override
+    public void sendNotice(Notice notice) throws RuntimeException {
+        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
+            throw new RuntimeException("You use clientbound api method in serverbound");
+        NoticeQueue.addToQueue(notice);
     }
 
     @Override

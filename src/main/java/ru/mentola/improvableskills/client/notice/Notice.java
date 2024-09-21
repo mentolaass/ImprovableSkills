@@ -12,7 +12,7 @@ import java.awt.*;
 @RequiredArgsConstructor @Getter
 public final class Notice {
     private final String text;
-    private final Identifier id;
+    private final Identifier textureId;
     private final long startTime = System.currentTimeMillis();
     private final int displayDuration = 1000;
 
@@ -31,7 +31,7 @@ public final class Notice {
         int alpha = (int) (255 * (1 - progress));
         int color = (alpha << 24) | 0xFFFFFF;
         context.drawText(MinecraftClient.getInstance().textRenderer, text, 25, yPos, color, false);
-        RenderUtil.drawTexture(context, id, 10, yPos - 1.5f, 0, 0, 10, 10, new Color(255, 255, 255, alpha));
+        RenderUtil.drawTexture(context, textureId, 10, yPos - 1.5f, 0, 0, 10, 10, new Color(255, 255, 255, alpha));
     }
 
     public boolean isAlive() {

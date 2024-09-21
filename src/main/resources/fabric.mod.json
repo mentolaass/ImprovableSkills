@@ -3,12 +3,12 @@
   "id": "improvableskills",
   "version": "${version}",
   "name": "ImprovableSkills",
-  "description": "",
-  "authors": [],
+  "description": "Vanilla skills in your game!",
+  "authors": ["mentolaas", "vierimuru"],
   "contact": {},
   "license": "All-Rights-Reserved",
   "icon": "assets/improvableskills/icon.png",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
     "client": [
       "ru.mentola.improvableskills.ImprovableSkills"

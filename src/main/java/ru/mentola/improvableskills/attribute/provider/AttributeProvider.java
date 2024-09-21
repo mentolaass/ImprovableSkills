@@ -6,11 +6,11 @@ import org.jetbrains.annotations.Nullable;
 import ru.mentola.improvableskills.attribute.Attribute;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public final class AttributeProvider {
-    private static final Set<Attribute<?>> attributes = new HashSet<>();
+    private static final Set<Attribute<?>> attributes = new LinkedHashSet<>();
 
     public AttributeProvider() {
         throw new RuntimeException("Unsupported");

@@ -11,10 +11,11 @@ import ru.mentola.improvableskills.attribute.Attribute;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public final class SkillProvider {
-    private static final Set<Skill> skills = new HashSet<>();
+    private static final Set<Skill> skills = new LinkedHashSet<>();
 
     public SkillProvider() {
         throw new RuntimeException("Unsupported");

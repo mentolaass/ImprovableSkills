@@ -3,6 +3,7 @@ package ru.mentola.improvableskills.client.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
@@ -15,11 +16,40 @@ public class RenderUtil {
         context.fill((int) x, (int) y,(int)(x + width), (int)(y + height), backgroundColor.getRGB());
     }
 
+    public void renderPlayerHead(DrawContext context, ClientPlayerEntity player, int x, int y, int width, int height, float opacity) {
+        Identifier skinLocation = player.getSkinTextures().texture();
+        if (opacity != 1.0f) {
+            RenderSystem.enableBlend();
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, opacity);
+        }
+        context.drawTexture(skinLocation, x, y, width, height, 8.0f, 8, 8, 8, 64, 64);
+        context.drawTexture(skinLocation, x, y, width, height, 40.0f, 8, 8, 8, 64, 64);
+        if (opacity != 1.0f) {
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            RenderSystem.disableBlend();
+        }
+    }
+
     public void renderBorder(DrawContext context, double x, double y, double width, double height, double thickness, Color borderColor) {
         context.fill((int) x, (int) y, (int) (x + width), (int) (y + thickness), borderColor.getRGB());
         context.fill((int) x, (int) (y + height - thickness), (int) (x + width), (int) (y + height), borderColor.getRGB());
         context.fill((int) x, (int) (y + thickness), (int) (x + thickness), (int) (y + height - thickness), borderColor.getRGB());
         context.fill((int) (x + width - thickness), (int) (y + thickness), (int) (x + width), (int) (y + height - thickness), borderColor.getRGB());
+    }
+
+    public void drawCenteredTexture(DrawContext context, Identifier texture, float x, float y, float width, float height, float textureWidth, float textureHeight, Color color) {
+        int textureX = (int) (x + (width - textureWidth) / 2);
+        int textureY = (int) (y + (height - textureHeight) / 2);
+        drawTexture(
+                context,
+                texture,
+                (float) textureX,
+                (float) textureY,
+                0, 0,
+                (float) textureWidth,
+                (float) textureHeight,
+                color
+        );
     }
 
     public void drawTexture(DrawContext context, Identifier texture, float x, float y, float u, float v, float width, float height, Color color) {
@@ -40,7 +70,6 @@ public class RenderUtil {
 
     private void drawTexturedQuad(DrawContext context, Identifier texture, float x1, float x2, float y1, float y2, float z, float u1, float u2, float v1, float v2, Color color) {
         RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, color.getAlpha() / 255.0f);
@@ -51,6 +80,7 @@ public class RenderUtil {
         bufferBuilder.vertex(matrix4f, (float)x2, (float)y2, (float)z).texture(u2, v2);
         bufferBuilder.vertex(matrix4f, (float)x2, (float)y1, (float)z).texture(u2, v1);
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.disableBlend();
     }
 }

@@ -3,11 +3,17 @@ package ru.mentola.improvableskills.util;
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.attribute.Attribute;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -48,6 +54,15 @@ public class Util {
         return items;
     }
 
+    public void renderCenteredText(DrawContext context, Text text, double x, double y, double width, double height, Color color) {
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+        int textWidth = textRenderer.getWidth(text);
+        int textHeight = textRenderer.fontHeight;
+        int textX = (int) (x + (width - textWidth) / 2);
+        int textY = (int) (y + (height - textHeight) / 2);
+        context.drawText(MinecraftClient.getInstance().textRenderer, text, (int) textX, (int) textY, color.getRGB(), false);
+    }
+
     public <T extends Number> T getNumberValueAttribute(Attribute<T> attribute) {
         int level = attribute.getLevel();
         double minValue = attribute.getMinValue().doubleValue();
@@ -85,5 +100,15 @@ public class Util {
 
     public int getNextPointsToNextLevelNeed(PlayerData playerData) {
         return (int) ((10000 * playerData.getLevel()) * 1.5);
+    }
+
+    public float smooth(float end, float start, float multiple) {
+        return (1.0f - MathHelper.clamp((float)(deltaTime() * (double)multiple), 0.0f, 1.0f)) * end + MathHelper.clamp((float)(deltaTime() * (double)multiple), 0.0f, 1.0F) * start;
+    }
+
+    public double deltaTime() {
+        int fps = MinecraftClient.getInstance().getCurrentFps();
+        if (fps >= 200) fps = 200;
+        return fps > 0 ? 1.0d / fps : 1.0d;
     }
 }
