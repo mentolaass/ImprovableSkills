@@ -11,16 +11,19 @@ ImprovableSkillsAPI API = ImprovableSkillsProvider.getAPI();
 ```
 ### Registering new skill
 ```java
+// use on your onInitializeClient
 Skill skill = new Skill(Identifier.of("example_skill"), Identifier.of("example_skill_texture"), Text.of("ExampleSkill"), Text.of("ExampleSkillDescription"), 15000, 10, Set.of());
 API.registerSkill(skill);
 ```
 ### Registering new attribute
 ```java
+// use on your onInitializeClient
 NumberAttribute<?> EXAMPLE_SKILL_ATTRIBUTE = AttributeFactory.createNumAttribute(Identifier.of("example_skill_attribute"), Text.of("ExampleSkillAttribute"), Text.of("ExampleSkillAttributeDescription"), 1000, 1, 10, 1);
 API.registerAttribute(EXAMPLE_SKILL_ATTRIBUTE);
 ```
 ### Attach attribute to skill
 ```java
+// use on your onInitializeClient
 Skill skill = new Skill(Identifier.of("example_skill"), Identifier.of("example_skill_texture"), Text.of("ExampleSkill"), Text.of("ExampleSkillDescription"), 15000, 10, Set.of(
     EXAMPLE_SKILL_ATTRIBUTE
 ));
@@ -35,6 +38,11 @@ PlayerData playerData = API.getData(PlayerData.class);
 ```java
 ServerPlayerEntity serverPlayerEntity = ...;
 PlayerData playerData = API.getPlayerData(serverPlayerEntity);
+```
+### Get all registered skills and attributes
+```java
+SkillProvider.getSkills();
+AttributeProvider.getAttributes();
 ```
 ### Other API methods
 ```java
