@@ -1,7 +1,7 @@
 # Improvable Skills
 With this mod you can learn unique skills and pump up their characteristics called *attributes*.
 # Screenshots
-[![image.png](https://i.postimg.cc/bwDmZR9S/image.png)](https://postimg.cc/21YQJhJC)
+[![image.png](https://i.postimg.cc/CK7FQqdJ/image.png)](https://postimg.cc/nssbsM4Q)
 [![image.png](https://i.postimg.cc/1RBC2XzX/image.png)](https://postimg.cc/WtDwJ2gc)
 # API
 Using the API you can create your skills and attributes.
