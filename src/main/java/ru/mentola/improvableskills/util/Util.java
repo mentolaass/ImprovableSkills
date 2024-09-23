@@ -54,6 +54,10 @@ public class Util {
         return items;
     }
 
+    public boolean isOre(Block block) {
+        return block.equals(Blocks.DIAMOND_ORE) || block.equals(Blocks.DEEPSLATE_DIAMOND_ORE) || block.equals(Blocks.GOLD_ORE) || block.equals(Blocks.DEEPSLATE_GOLD_ORE) || block.equals(Blocks.EMERALD_ORE) || block.equals(Blocks.DEEPSLATE_EMERALD_ORE) || block.equals(Blocks.COPPER_ORE) || block.equals(Blocks.DEEPSLATE_COPPER_ORE) || block.equals(Blocks.IRON_ORE) || block.equals(Blocks.DEEPSLATE_IRON_ORE) || block.equals(Blocks.COAL_ORE) || block.equals(Blocks.DEEPSLATE_COAL_ORE);
+    }
+
     public void renderCenteredText(DrawContext context, Text text, double x, double y, double width, double height, Color color) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         int textWidth = textRenderer.getWidth(text);
@@ -65,6 +69,15 @@ public class Util {
 
     public <T extends Number> T getNumberValueAttribute(Attribute<T> attribute) {
         int level = attribute.getLevel();
+        double minValue = attribute.getMinValue().doubleValue();
+        double maxValue = attribute.getMaxValue().doubleValue();
+        double stepLevel = attribute.getStepLevel().doubleValue();
+        double value = minValue + (level * stepLevel);
+        if (value > maxValue) value = maxValue;
+        return castToType(attribute.getMinValue(), value);
+    }
+
+    public <T extends Number> T getNumberValueAttribute(Attribute<T> attribute, int level) {
         double minValue = attribute.getMinValue().doubleValue();
         double maxValue = attribute.getMaxValue().doubleValue();
         double stepLevel = attribute.getStepLevel().doubleValue();

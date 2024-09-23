@@ -1,6 +1,5 @@
 package ru.mentola.improvableskills.client.screen.background;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -31,7 +30,7 @@ public final class ScreenBackground {
             }
             currentPosition++;
         }
-        if (horizontalAnimationPosition >= scaledHeight / 30)
+        if (horizontalAnimationPosition >= scaledHeight / offsetY)
             horizontalAnimationPosition = 0;
     }
 }

@@ -5,13 +5,15 @@
   "name": "ImprovableSkills",
   "description": "Vanilla skills in your game!",
   "authors": ["mentolaas", "vierimuru"],
-  "contact": {},
+  "contact": {
+    "sources" : "https://github.com/mentolaass/ImprovableSkills"
+  },
   "license": "All-Rights-Reserved",
   "icon": "assets/improvableskills/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
-      "ru.mentola.improvableskills.ImprovableSkills"
+      "ru.mentola.improvableskills.client.ImprovableSkillsClient"
     ],
     "main": [
       "ru.mentola.improvableskills.ImprovableSkills"

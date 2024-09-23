@@ -1,7 +1,7 @@
 package ru.mentola.improvableskills.skill;
 
 import net.minecraft.text.Text;
-import ru.mentola.improvableskills.attribute.Attributes;
+import ru.mentola.improvableskills.attribute.ModAttributes;
 import ru.mentola.improvableskills.shared.Constants;
 
 import java.util.Set;
@@ -16,7 +16,7 @@ public final class MasterWeaponSkill extends Skill {
                 10000,
                 10,
                 Set.of(
-                        Attributes.MASTER_WEAPON_ATTRIBUTE_DAMAGE
+
                 )
         );
     }

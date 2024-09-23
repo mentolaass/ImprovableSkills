@@ -1,5 +1,6 @@
 package ru.mentola.improvableskills.handler;
 
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -28,10 +29,12 @@ public final class EntityHandler implements
     public void afterKilledOtherEntity(ServerWorld world, Entity entity, LivingEntity killedEntity) {
         if (entity instanceof ServerPlayerEntity player) {
             int points = PointProcessor.get(PointType.KILL_ENTITY, killedEntity);
-            PlayerData playerData = DataPersistentState.getPlayerData(player);
-            playerData.setPoints(playerData.getPoints() + points);
-            Network.sendTo(player, new DataUpdatePayload(playerData));
-            Network.sendTo(player, new NoticePayload(String.format("+%s очков", points), Constants.POINTS_TEX));
+            if (points > 0) {
+                PlayerData playerData = DataPersistentState.getPlayerData(player);
+                playerData.setPoints(playerData.getPoints() + points);
+                Network.sendTo(player, new DataUpdatePayload(playerData));
+                Network.sendTo(player, new NoticePayload(String.format("+%s очков", points), Constants.POINTS_TEX));
+            }
         }
     }
 

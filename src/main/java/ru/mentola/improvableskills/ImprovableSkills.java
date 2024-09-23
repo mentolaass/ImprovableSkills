@@ -1,53 +1,33 @@
 package ru.mentola.improvableskills;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
-import org.lwjgl.glfw.GLFW;
-import ru.mentola.improvableskills.api.ImprovableSkillsAPI;
-import ru.mentola.improvableskills.api.provider.ImprovableSkillsProvider;
-import ru.mentola.improvableskills.client.screen.ImproveScreen;
-import ru.mentola.improvableskills.data.Data;
+import ru.mentola.improvableskills.api.event.Listener;
+import ru.mentola.improvableskills.api.event.manager.EventManager;
+import ru.mentola.improvableskills.api.event.v1.PlayerDataUpdateEvent;
+import ru.mentola.improvableskills.attribute.ModAttributes;
 import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.client.data.DataProvider;
 import ru.mentola.improvableskills.data.DataPersistentState;
-import ru.mentola.improvableskills.client.handler.HudRenderHandler;
 import ru.mentola.improvableskills.handler.BlockHandler;
 import ru.mentola.improvableskills.handler.EntityHandler;
 import ru.mentola.improvableskills.network.Network;
 import ru.mentola.improvableskills.network.payload.*;
 import ru.mentola.improvableskills.network.payload.side.Side;
-import ru.mentola.improvableskills.client.notice.Notice;
-import ru.mentola.improvableskills.client.notice.NoticeQueue;
 import ru.mentola.improvableskills.skill.*;
 import ru.mentola.improvableskills.attribute.Attribute;
-import ru.mentola.improvableskills.attribute.Attributes;
 import ru.mentola.improvableskills.attribute.provider.AttributeProvider;
 import ru.mentola.improvableskills.skill.provider.SkillProvider;
 import ru.mentola.improvableskills.client.sound.CustomSound;
 import ru.mentola.improvableskills.util.Util;
 
-public final class ImprovableSkills implements ClientModInitializer, ModInitializer, ImprovableSkillsAPI {
+public final class ImprovableSkills implements ModInitializer {
     public static final String MOD_ID = "improvableskills";
 
-    public static final KeyBinding IMPROVE_SCREEN_KEYBINDING = KeyBindingHelper.registerKeyBinding(
-            new KeyBinding("key.improvableskills.openscreen",
-            InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_RIGHT_SHIFT,
-            "category.improvableskills"));
+    public static final EventManager EVENT_MANAGER = new EventManager();
 
     @Override
     public void onInitialize() {
@@ -75,26 +55,8 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
         SkillProvider.registerSkill(new EloquenceSkill());
         SkillProvider.registerSkill(new StarNavigatorSkill());
 
-        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_COUNT);
-        AttributeProvider.registerAttribute(Attributes.MINER_LUCK_ATTRIBUTE_PERCENT);
-        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_CHANCE);
-        AttributeProvider.registerAttribute(Attributes.VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH);
-        AttributeProvider.registerAttribute(Attributes.RABBIT_ATTRIBUTE_POWER_JUMP);
-        AttributeProvider.registerAttribute(Attributes.RABBIT_ATTRIBUTE_SPEED);
-        AttributeProvider.registerAttribute(Attributes.MASTER_WEAPON_ATTRIBUTE_DAMAGE);
-
-        ImprovableSkillsProvider.setAPI(this);
-    }
-
-    @Override
-    public void onInitializeClient() {
-        Network.registerClientReceiver(DataUpdatePayload.PAYLOAD_ID, (payload, context) -> {
-            PlayerData playerData = DataProvider.get(PlayerData.class);
-            if (playerData == null) throw new RuntimeException("Client Player Data Is Null");
-            playerData.copyOf(payload.getPlayerData());
-        });
-
-        Network.registerClientReceiver(NoticePayload.PAYLOAD_ID, (payload, context) -> NoticeQueue.addToQueue(new Notice(payload.getText(), payload.getIdentifier())));
+        AttributeProvider.registerAttribute(ModAttributes.MINER_LUCK_SKILL_ATTRIBUTE_CHANCE_CALL);
+        AttributeProvider.registerAttribute(ModAttributes.MINER_LUCK_SKILL_ATTRIBUTE_COUNT_DROP);
 
         Network.registerServerReceiver(PumpSkillPayload.PAYLOAD_ID, (payload, context) -> {
             PlayerData playerData = DataPersistentState.getPlayerData(context.player());
@@ -103,6 +65,7 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
             if (skill == null) return;
             if (playerData.getPoints() < skill.getPricePoints()
                     || playerData.getLevel() < skill.getNeedLevel()) return;
+            if (isCancelledWithUpdateEvent(playerData, new PlayerDataUpdateEvent.UpdateData(null, null, skill, -1), PlayerDataUpdateEvent.Type.ATTACH_SKILL)) return;
             playerData.setPoints(playerData.getPoints() - skill.getPricePoints());
             playerData.attachSkill(skill.copy());
             Network.sendTo(context.player(), new DataUpdatePayload(playerData));
@@ -112,6 +75,8 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
             PlayerData playerData = DataPersistentState.getPlayerData(context.player());
             int need = Util.getNextPointsToNextLevelNeed(playerData);
             if (playerData.getPoints() < need) return;
+            if (isCancelledWithUpdateEvent(playerData, new PlayerDataUpdateEvent.UpdateData(null, null, null, playerData.getLevel() + 1), PlayerDataUpdateEvent.Type.UPGRADE_LEVEL))
+                return;
             playerData.setPoints(playerData.getPoints() - need);
             playerData.setLevel(playerData.getLevel() + 1);
             Network.sendTo(context.player(), new DataUpdatePayload(playerData));
@@ -123,9 +88,11 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
             Skill skill = playerData.getSkill(payload.getIdSkill());
             if (skill == null) return;
             if (!skill.containsAttribute(payload.getIdAttribute())) return;
-            int price = skill.getAttribute(payload.getIdAttribute()).getPrice();
+            Attribute<?> attribute = skill.getAttribute(payload.getIdAttribute());
+            int price = attribute.getPrice() * payload.getCount();
             if (playerData.getPoints() < price) return;
-            if (skill.upgradeAttribute(payload.getIdAttribute())) {
+            if (isCancelledWithUpdateEvent(playerData, new PlayerDataUpdateEvent.UpdateData(attribute, skill, null, -1), PlayerDataUpdateEvent.Type.UPGRADE_ATTRIBUTE)) return;
+            if (skill.upgradeAttribute(payload.getIdAttribute(), payload.getCount())) {
                 playerData.setPoints(playerData.getPoints() - price);
                 Network.sendTo(context.player(), new DataUpdatePayload(playerData));
             }
@@ -138,53 +105,13 @@ public final class ImprovableSkills implements ClientModInitializer, ModInitiali
         ServerLivingEntityEvents.ALLOW_DAMAGE.register(entityHandler);
         final BlockHandler blockHandler = new BlockHandler();
         PlayerBlockBreakEvents.AFTER.register(blockHandler);
-        final HudRenderHandler hudRenderHandler = new HudRenderHandler();
-        HudRenderCallback.EVENT.register(hudRenderHandler);
-
-        ClientTickEvents.START_CLIENT_TICK.register((c) -> {
-            while (IMPROVE_SCREEN_KEYBINDING.wasPressed())
-                MinecraftClient.getInstance().setScreen(new ImproveScreen());
-        });
     }
 
-    @Override
-    public PlayerData getPlayerData(LivingEntity player) throws RuntimeException {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER)
-            throw new RuntimeException("You use serverbound api method in clientbound");
-        return DataPersistentState.getPlayerData(player);
-    }
-
-    @Override
-    public <D extends Data> D getData(Class<D> target) throws RuntimeException {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
-            throw new RuntimeException("You use clientbound api method in serverbound");
-        return DataProvider.get(target);
-    }
-
-    @Override
-    public void sendNotice(Notice notice) throws RuntimeException {
-        if (FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT)
-            throw new RuntimeException("You use clientbound api method in serverbound");
-        NoticeQueue.addToQueue(notice);
-    }
-
-    @Override
-    public void registerSkill(Skill skill) {
-        SkillProvider.registerSkill(skill);
-    }
-
-    @Override
-    public void unregisterSkill(Identifier id) {
-        SkillProvider.unregisterSkill(id);
-    }
-
-    @Override
-    public void registerAttribute(Attribute<?> attribute) {
-        AttributeProvider.registerAttribute(attribute);
-    }
-
-    @Override
-    public void unregisterAttribute(Identifier id) {
-        AttributeProvider.unregisterAttribute(id);
+    private boolean isCancelledWithUpdateEvent(PlayerData playerData, PlayerDataUpdateEvent.UpdateData updateData, PlayerDataUpdateEvent.Type type) {
+        PlayerDataUpdateEvent event = new PlayerDataUpdateEvent(playerData, type, updateData);
+        for (Listener listener : ImprovableSkills.EVENT_MANAGER.getRegisteredListeners())
+            if (listener instanceof PlayerDataUpdateEvent.Subscribe eventSub)
+                eventSub.onPlayerDataUpdate(event);
+        return event.isCancelled();
     }
 }

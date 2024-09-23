@@ -4,28 +4,25 @@
 
   "skill.improvableskills.miner_luck": "Шахтерская Удача",
   "skill.improvableskills.miner_luck.desc": "Увеличение шанса выпадения дополнительных руд при добыче (например, шанс добыть один дополнительный алмаз).",
-  "skill.improvableskills.miner_luck_attribute_percent": "Шанс удачи",
-  "skill.improvableskills.miner_luck_attribute_count": "Увеличение дропа",
+  "skill.improvableskills.miner_luck.attribute.chance_call": "Шанс срабатывания",
+  "skill.improvableskills.miner_luck.attribute.chance_call.desc": "Увеличение стандартного шанса срабатывания умения.",
+  "skill.improvableskills.miner_luck.attribute.count_drop": "Количество дропа",
+  "skill.improvableskills.miner_luck.attribute.count_drop.desc": "Увеличение стандартного количества дропа при срабатывании умения.",
 
   "skill.improvableskills.vampirism": "Вампиризм",
   "skill.improvableskills.vampirism.desc": "Шанс восполнить здоровье при убийстве моба или игрока.",
-  "skill.improvableskills.vampirism_attribute_chance": "Шанс вампиризма",
-  "skill.improvableskills.vampirism_attribute_percent": "Процент восполнения",
 
   "skill.improvableskills.rabbit": "Кролик",
   "skill.improvableskills.rabbit.desc": "Увеличение скорости и усиление прыжка игрока.",
-  "skill.improvableskills.rabbit_attribute_power_jump": "Силы прыжка",
-  "skill.improvableskills.rabbit_attribute_speed": "Скорость",
 
   "skill.improvableskills.master_weapon": "Мастер оружия",
   "skill.improvableskills.master_weapon.desc": "У всего оружия увеличивается урон на +0.2 с каждым уровнем атрибута. Исключение: Топор.",
-  "skill.improvableskills.master_weapon_attribute_damage": "Увеличение урона",
 
   "skill.improvableskills.beholder": "Смотрящий",
   "skill.improvableskills.beholder.desc": "Урон от лука/арбалета повышается, ночью вы видите больше.",
 
   "skill.improvableskills.farmer": "Фермер",
-  "skill.improvableskills.farmer.desc": "Вы собираете урожай более эффективно, так-же вам даётся скидка у жителей которые продают еду.",
+  "skill.improvableskills.farmer.desc": "Вы собираете урожай более эффективно, также вам даётся скидка у жителей, которые продают еду.",
 
   "skill.improvableskills.woodcutter": "Лесоруб",
   "skill.improvableskills.woodcutter.desc": "Быстрее рубит дерево. (Только древесину) повышенный урон и прочность у топора.",
@@ -37,7 +34,7 @@
   "skill.improvableskills.starnavigator.desc": "Уменьшает расход еды, меньше шанс встретить фантомов.",
 
   "skill.improvableskills.creed": "Крид",
-  "skill.improvableskills.creed.desc": "Вы получаете способность уклонятся с некоторым шансом, тем самым получая меньше урона.",
+  "skill.improvableskills.creed.desc": "Вы получаете способность уклоняться с некоторым шансом, тем самым получая меньше урона.",
 
   "skill.improvableskills.hardness": "Твёрдость",
   "skill.improvableskills.hardness.desc": "Вы получаете малое сопротивление от урона.",
@@ -46,23 +43,26 @@
   "skill.improvableskills.eloquence.desc": "Вам даётся скидка у жителей.",
 
   "skill.improvableskills.merchanthand": "Рука торговца",
-  "skill.improvableskills.merchanthand.desc": "После добычи чего-либо оно появляется в инвентаре. ",
+  "skill.improvableskills.merchanthand.desc": "После добычи чего-либо оно появляется в инвентаре.",
 
   "skill.improvableskills.aikido": "Айкидо",
   "skill.improvableskills.aikido.desc": "С шансом можно отразить урон противника, противник получит некоторое количество урона.",
 
   "gui.improvableskills.improvescreen.infoskill": "Информация о умении",
+  "gui.improvableskills.improvescreen.infoattribute": "Информация о атрибуте",
   "gui.improvableskills.improvescreen.attributes": "Атрибуты",
   "gui.improvableskills.improvescreen.attach": "Изучить",
   "gui.improvableskills.improvescreen.lesspoints": "Недостаточно очков",
-  "gui.improvableskills.improvescreen.needtoattach": "Необходимо для изучения",
-  "gui.improvableskills.improvescreen.yourlevel": "Ваш уровень",
-  "gui.improvableskills.improvescreen.yourpoints": "Ваши очки",
   "gui.improvableskills.improvescreen.upgrade": "Улучшить",
   "gui.improvableskills.improvescreen.attached": "Изучено",
-  "gui.improvableskills.improveattributesscreen.title": "Улучшение атрибутов",
-  "gui.improvableskills.improveattributesscreen.apply": "Применить",
-  "gui.improvableskills.improveattributesscreen.need": "Необходимо",
+  "gui.improvableskills.improvescreen.description": "Описание",
+  "gui.improvableskills.improvescreen.change": "Изменение",
+  "gui.improvableskills.improvescreen.upgradelevel": "Повысить уровень",
+  "gui.improvableskills.improveattributesscreen.upgradeattributes": "Улучшение атрибутов",
+  "gui.improvableskills.improveattributesscreen.alreadylearned": "У вас уже изучено данное умение",
+  "gui.improvableskills.improveattributesscreen.needpoints": "Необходимо очков",
+  "gui.improvableskills.improveattributesscreen.needlevel": "Необходимый уровень",
+  "gui.improvableskills.improveattributesscreen.existslvlattribute": "Вы уже достигли данного уровня атрибута",
 
   "gui.improvableskills.other.points": "очков",
   "gui.improvableskills.other.level": "урв",

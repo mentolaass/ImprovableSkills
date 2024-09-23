@@ -1,8 +1,8 @@
 package ru.mentola.improvableskills.skill;
 
 import net.minecraft.text.Text;
+import ru.mentola.improvableskills.attribute.ModAttributes;
 import ru.mentola.improvableskills.shared.Constants;
-import ru.mentola.improvableskills.attribute.Attributes;
 
 import java.util.Set;
 
@@ -16,8 +16,7 @@ public final class VampirismSkill extends Skill {
                 5000,
                 3,
                 Set.of(
-                        Attributes.VAMPIRISM_ATTRIBUTE_CHANCE.copy(false),
-                        Attributes.VAMPIRISM_ATTRIBUTE_PERCENT_HEALTH.copy(false)
+
                 )
         );
     }

@@ -1,73 +1,73 @@
 {
-  "key.improvableskills.openscreen": "Open Skill Menu",
+  "key.improvableskills.openscreen": "Open Upgrade Menu",
   "category.improvableskills": "Improvable Skills",
 
   "skill.improvableskills.miner_luck": "Miner's Luck",
-  "skill.improvableskills.miner_luck.desc": "Increases the chance of dropping additional ores when mining (e.g., a chance to mine an extra diamond).",
-  "skill.improvableskills.miner_luck_attribute_percent": "Chance Drop",
-  "skill.improvableskills.miner_luck_attribute_count": "Up Drop Count",
+  "skill.improvableskills.miner_luck.desc": "Increases the chance of obtaining extra ores when mining (e.g., the chance to mine one additional diamond).",
+  "skill.improvableskills.miner_luck.attribute.chance_call": "Activation Chance",
+  "skill.improvableskills.miner_luck.attribute.chance_call.desc": "Increase in the standard activation chance of the skill.",
+  "skill.improvableskills.miner_luck.attribute.count_drop": "Drop Count",
+  "skill.improvableskills.miner_luck.attribute.count_drop.desc": "Increase in the standard drop count when the skill activates.",
 
   "skill.improvableskills.vampirism": "Vampirism",
-  "skill.improvableskills.vampirism.desc": "Chance to replenish health when killing a mob or player.",
-  "skill.improvableskills.vampirism_attribute_chance": "Chance Vampirism",
-  "skill.improvableskills.vampirism_attribute_percent": "Percent Replenish",
+  "skill.improvableskills.vampirism.desc": "Chance to restore health when killing a mob or player.",
 
   "skill.improvableskills.rabbit": "Rabbit",
-  "skill.improvableskills.rabbit.desc": "Increases player speed and jump boost.",
-  "skill.improvableskills.rabbit_attribute_power_jump": "Jump Power",
-  "skill.improvableskills.rabbit_attribute_speed": "Speed",
+  "skill.improvableskills.rabbit.desc": "Increases player speed and jump height.",
 
   "skill.improvableskills.master_weapon": "Weapon Master",
-  "skill.improvableskills.master_weapon.desc": "All weapons gain +0.2 damage per attribute level. Exception: Axe.",
-  "skill.improvableskills.master_weapon_attribute_damage": "Damage Increase",
+  "skill.improvableskills.master_weapon.desc": "All weapons deal +0.2 damage for each attribute level. Exception: Axe.",
 
-  "skill.improvableskills.beholder": "Watcher",
-  "skill.improvableskills.beholder.desc": "Bow/Crossbow damage is increased, and you see better at night.",
+  "skill.improvableskills.beholder": "Beholder",
+  "skill.improvableskills.beholder.desc": "Bow/crossbow damage is increased, and you can see more at night.",
 
   "skill.improvableskills.farmer": "Farmer",
-  "skill.improvableskills.farmer.desc": "You harvest crops more efficiently and get a discount from villagers who sell food.",
+  "skill.improvableskills.farmer.desc": "You harvest crops more efficiently and receive discounts from villagers who sell food.",
 
   "skill.improvableskills.woodcutter": "Woodcutter",
-  "skill.improvableskills.woodcutter.desc": "Cuts wood faster. (Only wood) Increased axe damage and durability.",
+  "skill.improvableskills.woodcutter.desc": "Cuts wood faster. (Only wood) Increased damage and durability for the axe.",
 
   "skill.improvableskills.fishbreath": "Fish Breath",
-  "skill.improvableskills.fishbreath.desc": "Improved maneuverability in water and longer underwater breathing time.",
+  "skill.improvableskills.fishbreath.desc": "Increased maneuverability in water and time spent underwater.",
 
   "skill.improvableskills.starnavigator": "Star Navigator",
   "skill.improvableskills.starnavigator.desc": "Reduces food consumption and lowers the chance of encountering phantoms.",
 
   "skill.improvableskills.creed": "Creed",
-  "skill.improvableskills.creed.desc": "You gain a chance to dodge, reducing incoming damage.",
+  "skill.improvableskills.creed.desc": "You gain the ability to dodge with a certain chance, thus taking less damage.",
 
   "skill.improvableskills.hardness": "Hardness",
-  "skill.improvableskills.hardness.desc": "You gain minor damage resistance.",
+  "skill.improvableskills.hardness.desc": "You gain slight resistance to damage.",
 
   "skill.improvableskills.eloquence": "Eloquence",
-  "skill.improvableskills.eloquence.desc": "You get a discount from villagers.",
+  "skill.improvableskills.eloquence.desc": "You receive discounts from villagers.",
 
   "skill.improvableskills.merchanthand": "Merchant's Hand",
-  "skill.improvableskills.merchanthand.desc": "After gathering resources, they automatically appear in your inventory.",
+  "skill.improvableskills.merchanthand.desc": "After mining something, it appears in your inventory.",
 
   "skill.improvableskills.aikido": "Aikido",
-  "skill.improvableskills.aikido.desc": "Has a chance to reflect damage back to the attacker, dealing some damage to them.",
+  "skill.improvableskills.aikido.desc": "With a chance, you can reflect damage back to the attacker, causing them to take some damage.",
 
   "gui.improvableskills.improvescreen.infoskill": "Skill Information",
+  "gui.improvableskills.improvescreen.infoattribute": "Attribute Information",
   "gui.improvableskills.improvescreen.attributes": "Attributes",
   "gui.improvableskills.improvescreen.attach": "Learn",
   "gui.improvableskills.improvescreen.lesspoints": "Not enough points",
-  "gui.improvableskills.improvescreen.needtoattach": "Required to learn",
-  "gui.improvableskills.improvescreen.yourlevel": "Your level",
-  "gui.improvableskills.improvescreen.yourpoints": "Your points",
   "gui.improvableskills.improvescreen.upgrade": "Upgrade",
   "gui.improvableskills.improvescreen.attached": "Learned",
-  "gui.improvableskills.improveattributesscreen.title": "Upgrade Attributes",
-  "gui.improvableskills.improveattributesscreen.apply": "Apply",
-  "gui.improvableskills.improveattributesscreen.need": "Required",
+  "gui.improvableskills.improvescreen.description": "Description",
+  "gui.improvableskills.improvescreen.change": "Change",
+  "gui.improvableskills.improvescreen.upgradelevel": "Upgrade level",
+  "gui.improvableskills.improveattributesscreen.upgradeattributes": "Upgrade Attributes",
+  "gui.improvableskills.improveattributesscreen.alreadylearned": "You have already learned this skill",
+  "gui.improvableskills.improveattributesscreen.needpoints": "Points needed",
+  "gui.improvableskills.improveattributesscreen.needlevel": "Required level",
+  "gui.improvableskills.improveattributesscreen.existslvlattribute": "You have already reached this attribute level",
 
   "gui.improvableskills.other.points": "points",
-  "gui.improvableskills.other.level": "lvl",
+  "gui.improvableskills.other.level": "level",
 
-  "sound.improvableskills.sound.up_attribute": "Up Attribute",
-  "sound.improvableskills.sound.up_level": "Up Level",
-  "sound.improvableskills.sound.attach_skill": "Attach Skill"
+  "sound.improvableskills.sound.up_attribute": "Attribute Upgrade",
+  "sound.improvableskills.sound.up_level": "Level Up",
+  "sound.improvableskills.sound.attach_skill": "Learning Skill"
 }

@@ -6,10 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.mentola.improvableskills.ImprovableSkills;
+import ru.mentola.improvableskills.api.event.Listener;
+import ru.mentola.improvableskills.api.event.v1.PlayerDataUpdateEvent;
+import ru.mentola.improvableskills.api.event.v1.PlayerGetPointsEvent;
 import ru.mentola.improvableskills.attribute.Attribute;
 import ru.mentola.improvableskills.skill.Skill;
 
@@ -20,13 +27,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public final class PlayerData implements Data {
     @SerializedName("points")
-    private int points = 10000000;
+    private int points = 100000000;
     @SerializedName("level")
-    private int level = 200;
+    private int level = 1;
     @SerializedName("skills")
     private Set<Skill> skillSet = new HashSet<>();
 
-    public void copyOf(PlayerData playerData) {
+    public void copyOf(@NotNull PlayerData playerData) {
         this.points = playerData.getPoints();
         this.level = playerData.getLevel();
         this.skillSet = playerData.getSkillSet();

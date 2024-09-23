@@ -3,7 +3,6 @@ package ru.mentola.improvableskills.network.payload;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;

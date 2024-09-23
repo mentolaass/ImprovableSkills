@@ -23,6 +23,7 @@ public abstract class Attribute<T> implements Data {
     @Expose private final T stepLevel;
     @Expose private final int price;
     @Expose private final Text name;
+    @Expose private final Text desc;
     @SerializedName("type")
     private final AttributeType type;
     @Setter @SerializedName("level")

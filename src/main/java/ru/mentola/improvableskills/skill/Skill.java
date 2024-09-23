@@ -61,10 +61,10 @@ public class Skill implements Data {
         return this.getAttribute(id) != null;
     }
 
-    public boolean upgradeAttribute(Identifier id) {
+    public boolean upgradeAttribute(Identifier id, int count) {
         if (!this.containsAttribute(id)) return false;
         Attribute<?> attribute = this.getAttribute(id);
-        attribute.setLevel(attribute.getLevel() + 1);
+        attribute.setLevel(attribute.getLevel() + count);
         return true;
     }
 
@@ -74,6 +74,14 @@ public class Skill implements Data {
                 String.join(",", this.attributes.stream()
                         .map(Object::toString)
                         .collect(Collectors.toSet())));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Skill skill) {
+            return skill.getId().equals(this.id);
+        }
+        return false;
     }
 
     public Skill copy() {

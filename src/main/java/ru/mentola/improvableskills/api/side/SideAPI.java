@@ -1,5 +1,5 @@
 package ru.mentola.improvableskills.api.side;
 
 public enum SideAPI {
-    CLIENT, SERVER;
+    CLIENT, SERVER, BOTH;
 }

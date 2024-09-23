@@ -1,36 +1,88 @@
 package ru.mentola.improvableskills.api;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import ru.mentola.improvableskills.api.event.Listener;
 import ru.mentola.improvableskills.api.side.SideAPI;
 import ru.mentola.improvableskills.api.side.SidedAPI;
+import ru.mentola.improvableskills.attribute.provider.AttributeProvider;
+import ru.mentola.improvableskills.client.data.DataProvider;
 import ru.mentola.improvableskills.client.notice.Notice;
+import ru.mentola.improvableskills.client.notice.NoticeQueue;
 import ru.mentola.improvableskills.data.Data;
+import ru.mentola.improvableskills.data.DataPersistentState;
 import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.attribute.Attribute;
+import ru.mentola.improvableskills.network.Network;
+import ru.mentola.improvableskills.network.payload.NoticePayload;
 import ru.mentola.improvableskills.skill.Skill;
+import ru.mentola.improvableskills.skill.provider.SkillProvider;
 
-public interface ImprovableSkillsAPI {
+import static ru.mentola.improvableskills.ImprovableSkills.EVENT_MANAGER;
+
+public final class ImprovableSkillsAPI {
     /**
      * @throws RuntimeException invalid side
      */
     @SidedAPI(side=SideAPI.SERVER)
-    PlayerData getPlayerData(LivingEntity player) throws RuntimeException;
+    public static PlayerData getPlayerData(ServerPlayerEntity player) {
+        return DataPersistentState.getPlayerData(player);
+    }
     /**
      * @param target any class extend of {@link Data}
      * @throws RuntimeException invalid side
      */
     @SidedAPI(side=SideAPI.CLIENT)
-    <D extends Data> @Nullable D getData(Class<D> target) throws RuntimeException;
+    public static <D extends Data> @Nullable D getData(Class<D> target) {
+        return DataProvider.get(target);
+    }
+    /**
+     * @throws RuntimeException invalid side
+     */
+    @SidedAPI(side=SideAPI.SERVER)
+    public static void sendServerNotice(ServerPlayerEntity player, Notice notice) {
+        Network.sendTo(player, new NoticePayload(notice.getText(), notice.getTextureId()));
+    }
+    /**
+     * @throws RuntimeException invalid side
+     */
+    @SidedAPI(side=SideAPI.SERVER)
+    public static void registerListener(Listener listener) {
+        EVENT_MANAGER.registerListener(listener);
+    }
+    /**
+     * @throws RuntimeException invalid side
+     */
+    @SidedAPI(side=SideAPI.SERVER)
+    public static void unregisterListener(Listener listener) {
+        EVENT_MANAGER.unregisterListener(listener);
+    }
     /**
      * @throws RuntimeException invalid side
      */
     @SidedAPI(side=SideAPI.CLIENT)
-    void sendNotice(Notice notice) throws RuntimeException;
+    public static void sendClientNotice(Notice notice) {
+        NoticeQueue.addToQueue(notice);
+    }
 
-    void registerSkill(Skill skill);
-    void unregisterSkill(Identifier id);
-    void registerAttribute(Attribute<?> attribute);
-    void unregisterAttribute(Identifier id);
+    @SidedAPI(side=SideAPI.BOTH)
+    public static void registerSkill(Skill skill) {
+        SkillProvider.registerSkill(skill);
+    }
+
+    @SidedAPI(side=SideAPI.BOTH)
+    public static void unregisterSkill(Identifier id) {
+        SkillProvider.unregisterSkill(id);
+    }
+
+    @SidedAPI(side=SideAPI.BOTH)
+    public static void registerAttribute(Attribute<?> attribute) {
+        AttributeProvider.registerAttribute(attribute);
+    }
+
+    @SidedAPI(side=SideAPI.BOTH)
+    public static void unregisterAttribute(Identifier id) {
+        AttributeProvider.unregisterAttribute(id);
+    }
 }
