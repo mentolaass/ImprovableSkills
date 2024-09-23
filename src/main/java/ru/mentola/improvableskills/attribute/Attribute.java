@@ -15,7 +15,7 @@ import ru.mentola.improvableskills.attribute.provider.AttributeProvider;
 import java.lang.reflect.Type;
 
 @AllArgsConstructor @Getter
-public abstract class Attribute<T> implements Data {
+public abstract class Attribute<T> {
     @SerializedName("id")
     @Expose private final Identifier identifier;
     @Expose private final T minValue;
@@ -29,7 +29,6 @@ public abstract class Attribute<T> implements Data {
     @Setter @SerializedName("level")
     private int level;
 
-    @Override
     public NbtCompound asNbt() {
         NbtCompound nbtCompound = new NbtCompound();
         nbtCompound.putString("id", identifier.toString());

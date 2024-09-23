@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor @Getter
-public class Skill implements Data {
+public class Skill {
     @SerializedName("id")
     private final Identifier id;
     @Expose private final Identifier tex;
@@ -32,18 +32,14 @@ public class Skill implements Data {
     @Setter @SerializedName("attributes")
     private Set<Attribute<?>> attributes;
 
-    @Override
     public NbtCompound asNbt() {
         NbtCompound nbtCompound = new NbtCompound();
         nbtCompound.putString("id", this.id.toString());
         NbtList attributesList = new NbtList();
         attributes.forEach((attribute) -> {
-            if (attribute != null) {
-                NbtCompound attributeCompound = new NbtCompound();
-                attributeCompound.putString("id", attribute.getIdentifier().toString());
-                attributeCompound.putInt("level", attribute.getLevel());
-                attributesList.add(attributeCompound);
-            }
+            if (attribute != null)
+                attributesList.add(attribute.asNbt());
+
         });
         nbtCompound.put("attributes", attributesList);
         return nbtCompound;

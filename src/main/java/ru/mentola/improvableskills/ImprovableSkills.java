@@ -42,21 +42,11 @@ public final class ImprovableSkills implements ModInitializer {
 
         SkillProvider.registerSkill(new MinerLuckSkill());
         SkillProvider.registerSkill(new VampirismSkill());
-        SkillProvider.registerSkill(new RabbitSkill());
-        SkillProvider.registerSkill(new MasterWeaponSkill());
-        SkillProvider.registerSkill(new CreedSkill());
-        SkillProvider.registerSkill(new BeholderSkill());
-        SkillProvider.registerSkill(new AikidoSkill());
-        SkillProvider.registerSkill(new FarmerSkill());
-        SkillProvider.registerSkill(new WoodCutterSkill());
-        SkillProvider.registerSkill(new FishBreathSkill());
-        SkillProvider.registerSkill(new HardnessSkill());
-        SkillProvider.registerSkill(new MerchantHandSkill());
-        SkillProvider.registerSkill(new EloquenceSkill());
-        SkillProvider.registerSkill(new StarNavigatorSkill());
 
         AttributeProvider.registerAttribute(ModAttributes.MINER_LUCK_SKILL_ATTRIBUTE_CHANCE_CALL);
         AttributeProvider.registerAttribute(ModAttributes.MINER_LUCK_SKILL_ATTRIBUTE_COUNT_DROP);
+        AttributeProvider.registerAttribute(ModAttributes.VAMPIRISM_SKILL_ATTRIBUTE_CHANCE_CALL);
+        AttributeProvider.registerAttribute(ModAttributes.VAMPIRISM_SKILL_ATTRIBUTE_COUNT_RETURN);
 
         Network.registerServerReceiver(PumpSkillPayload.PAYLOAD_ID, (payload, context) -> {
             PlayerData playerData = DataPersistentState.getPlayerData(context.player());
@@ -75,8 +65,7 @@ public final class ImprovableSkills implements ModInitializer {
             PlayerData playerData = DataPersistentState.getPlayerData(context.player());
             int need = Util.getNextPointsToNextLevelNeed(playerData);
             if (playerData.getPoints() < need) return;
-            if (isCancelledWithUpdateEvent(playerData, new PlayerDataUpdateEvent.UpdateData(null, null, null, playerData.getLevel() + 1), PlayerDataUpdateEvent.Type.UPGRADE_LEVEL))
-                return;
+            if (isCancelledWithUpdateEvent(playerData, new PlayerDataUpdateEvent.UpdateData(null, null, null, playerData.getLevel() + 1), PlayerDataUpdateEvent.Type.UPGRADE_LEVEL)) return;
             playerData.setPoints(playerData.getPoints() - need);
             playerData.setLevel(playerData.getLevel() + 1);
             Network.sendTo(context.player(), new DataUpdatePayload(playerData));
@@ -109,7 +98,7 @@ public final class ImprovableSkills implements ModInitializer {
 
     private boolean isCancelledWithUpdateEvent(PlayerData playerData, PlayerDataUpdateEvent.UpdateData updateData, PlayerDataUpdateEvent.Type type) {
         PlayerDataUpdateEvent event = new PlayerDataUpdateEvent(playerData, type, updateData);
-        for (Listener listener : ImprovableSkills.EVENT_MANAGER.getRegisteredListeners())
+        for (Listener listener : EVENT_MANAGER.getRegisteredListeners())
             if (listener instanceof PlayerDataUpdateEvent.Subscribe eventSub)
                 eventSub.onPlayerDataUpdate(event);
         return event.isCancelled();

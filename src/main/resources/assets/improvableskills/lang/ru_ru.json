@@ -11,42 +11,10 @@
 
   "skill.improvableskills.vampirism": "Вампиризм",
   "skill.improvableskills.vampirism.desc": "Шанс восполнить здоровье при убийстве моба или игрока.",
-
-  "skill.improvableskills.rabbit": "Кролик",
-  "skill.improvableskills.rabbit.desc": "Увеличение скорости и усиление прыжка игрока.",
-
-  "skill.improvableskills.master_weapon": "Мастер оружия",
-  "skill.improvableskills.master_weapon.desc": "У всего оружия увеличивается урон на +0.2 с каждым уровнем атрибута. Исключение: Топор.",
-
-  "skill.improvableskills.beholder": "Смотрящий",
-  "skill.improvableskills.beholder.desc": "Урон от лука/арбалета повышается, ночью вы видите больше.",
-
-  "skill.improvableskills.farmer": "Фермер",
-  "skill.improvableskills.farmer.desc": "Вы собираете урожай более эффективно, также вам даётся скидка у жителей, которые продают еду.",
-
-  "skill.improvableskills.woodcutter": "Лесоруб",
-  "skill.improvableskills.woodcutter.desc": "Быстрее рубит дерево. (Только древесину) повышенный урон и прочность у топора.",
-
-  "skill.improvableskills.fishbreath": "Рыбье дыхание",
-  "skill.improvableskills.fishbreath.desc": "Повышенная маневренность в воде и время пребывания в погружении.",
-
-  "skill.improvableskills.starnavigator": "Звёздный навигатор",
-  "skill.improvableskills.starnavigator.desc": "Уменьшает расход еды, меньше шанс встретить фантомов.",
-
-  "skill.improvableskills.creed": "Крид",
-  "skill.improvableskills.creed.desc": "Вы получаете способность уклоняться с некоторым шансом, тем самым получая меньше урона.",
-
-  "skill.improvableskills.hardness": "Твёрдость",
-  "skill.improvableskills.hardness.desc": "Вы получаете малое сопротивление от урона.",
-
-  "skill.improvableskills.eloquence": "Красноречие",
-  "skill.improvableskills.eloquence.desc": "Вам даётся скидка у жителей.",
-
-  "skill.improvableskills.merchanthand": "Рука торговца",
-  "skill.improvableskills.merchanthand.desc": "После добычи чего-либо оно появляется в инвентаре.",
-
-  "skill.improvableskills.aikido": "Айкидо",
-  "skill.improvableskills.aikido.desc": "С шансом можно отразить урон противника, противник получит некоторое количество урона.",
+  "skill.improvableskills.vampirism.attribute.chance_call": "Шанс срабатывания",
+  "skill.improvableskills.vampirism.attribute.chance_call.desc": "Увеличение стандартного шанс срабатывания умения.",
+  "skill.improvableskills.vampirism.attribute.count_return": "Процент восполнения",
+  "skill.improvableskills.vampirism.attribute.count_return.desc": "Увеличение процента восполняемого здоровья.",
 
   "gui.improvableskills.improvescreen.infoskill": "Информация о умении",
   "gui.improvableskills.improvescreen.infoattribute": "Информация о атрибуте",

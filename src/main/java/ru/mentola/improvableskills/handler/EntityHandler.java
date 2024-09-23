@@ -12,6 +12,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import ru.mentola.improvableskills.attribute.NumberAttribute;
 import ru.mentola.improvableskills.data.DataPersistentState;
 import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.network.Network;
@@ -20,6 +21,8 @@ import ru.mentola.improvableskills.network.payload.NoticePayload;
 import ru.mentola.improvableskills.point.PointProcessor;
 import ru.mentola.improvableskills.point.PointType;
 import ru.mentola.improvableskills.shared.Constants;
+import ru.mentola.improvableskills.skill.Skill;
+import ru.mentola.improvableskills.util.Util;
 
 public final class EntityHandler implements
         ServerEntityCombatEvents.AfterKilledOtherEntity,
@@ -46,6 +49,21 @@ public final class EntityHandler implements
 
     @Override
     public boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
+        if (source.getAttacker() instanceof ServerPlayerEntity serverPlayer) {
+            PlayerData playerData = DataPersistentState.getPlayerData(serverPlayer);
+            if (playerData.containsSkill(Constants.VAMPIRISM_SKILL)) {
+                Skill skill = playerData.getSkill(Constants.VAMPIRISM_SKILL);
+                if (skill.containsAttribute(Constants.VAMPIRISM_SKILL_ATTRIBUTE_COUNT_RETURN)
+                    && skill.containsAttribute(Constants.VAMPIRISM_SKILL_ATTRIBUTE_CHANCE_CALL)) {
+                    NumberAttribute<?> countReturnAttribute = (NumberAttribute<?>) skill.getAttribute(Constants.VAMPIRISM_SKILL_ATTRIBUTE_COUNT_RETURN);
+                    NumberAttribute<?> chanceCallAttribute = (NumberAttribute<?>) skill.getAttribute(Constants.VAMPIRISM_SKILL_ATTRIBUTE_CHANCE_CALL);
+                    int chanceCall = Util.getNumberValueAttribute(chanceCallAttribute).intValue();
+                    float countReturn = Util.getNumberValueAttribute(countReturnAttribute).floatValue();
+                    if (chanceCall >= Util.randomNumber(100, 0))
+                        serverPlayer.setHealth(serverPlayer.getHealth() + countReturn);
+                }
+            }
+        }
         return true;
     }
 }

@@ -22,45 +22,34 @@ import ru.mentola.improvableskills.skill.provider.SkillProvider;
 import static ru.mentola.improvableskills.ImprovableSkills.EVENT_MANAGER;
 
 public final class ImprovableSkillsAPI {
-    /**
-     * @throws RuntimeException invalid side
-     */
     @SidedAPI(side=SideAPI.SERVER)
     public static PlayerData getPlayerData(ServerPlayerEntity player) {
         return DataPersistentState.getPlayerData(player);
     }
+
     /**
      * @param target any class extend of {@link Data}
-     * @throws RuntimeException invalid side
      */
     @SidedAPI(side=SideAPI.CLIENT)
     public static <D extends Data> @Nullable D getData(Class<D> target) {
         return DataProvider.get(target);
     }
-    /**
-     * @throws RuntimeException invalid side
-     */
+
     @SidedAPI(side=SideAPI.SERVER)
     public static void sendServerNotice(ServerPlayerEntity player, Notice notice) {
         Network.sendTo(player, new NoticePayload(notice.getText(), notice.getTextureId()));
     }
-    /**
-     * @throws RuntimeException invalid side
-     */
+
     @SidedAPI(side=SideAPI.SERVER)
     public static void registerListener(Listener listener) {
         EVENT_MANAGER.registerListener(listener);
     }
-    /**
-     * @throws RuntimeException invalid side
-     */
+
     @SidedAPI(side=SideAPI.SERVER)
     public static void unregisterListener(Listener listener) {
         EVENT_MANAGER.unregisterListener(listener);
     }
-    /**
-     * @throws RuntimeException invalid side
-     */
+
     @SidedAPI(side=SideAPI.CLIENT)
     public static void sendClientNotice(Notice notice) {
         NoticeQueue.addToQueue(notice);

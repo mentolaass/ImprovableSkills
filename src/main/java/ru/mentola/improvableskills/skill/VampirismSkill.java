@@ -13,10 +13,11 @@ public final class VampirismSkill extends Skill {
                 Constants.VAMPIRISM_SKILL_TEX,
                 Text.translatable("skill.improvableskills.vampirism"),
                 Text.translatable("skill.improvableskills.vampirism.desc"),
-                5000,
+                15000,
                 3,
                 Set.of(
-
+                        ModAttributes.VAMPIRISM_SKILL_ATTRIBUTE_CHANCE_CALL,
+                        ModAttributes.VAMPIRISM_SKILL_ATTRIBUTE_COUNT_RETURN
                 )
         );
     }

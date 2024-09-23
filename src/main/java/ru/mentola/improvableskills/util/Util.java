@@ -12,11 +12,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import ru.mentola.improvableskills.data.PlayerData;
 import ru.mentola.improvableskills.attribute.Attribute;
+import ru.mentola.improvableskills.shared.Constants;
 
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 @UtilityClass
 public class Util {
@@ -24,14 +24,8 @@ public class Util {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
-    public Set<Attribute<?>> copyAttributes(Set<Attribute<?>> t) {
-        Set<Attribute<?>> attributes = new HashSet<>();
-        t.forEach((attribute) -> attributes.add(attribute.copy(true)));
-        return attributes;
-    }
-
-    public Set<Item> getOreDrop(Block block, int count) {
-        Set<Item> items = new HashSet<>();
+    public List<Item> getOreDrop(Block block, int count) {
+        List<Item> items = new ArrayList<>();
         Item dropItem = null;
         if (block.equals(Blocks.DIAMOND_ORE) || block.equals(Blocks.DEEPSLATE_DIAMOND_ORE)) {
             dropItem = Items.DIAMOND;
@@ -112,7 +106,7 @@ public class Util {
     }
 
     public int getNextPointsToNextLevelNeed(PlayerData playerData) {
-        return (int) ((10000 * playerData.getLevel()) * 1.5);
+        return (int) ((Constants.LEVEL_UP_STEP * playerData.getLevel()) * Constants.LEVEL_UP_MODIFIER);
     }
 
     public float smooth(float end, float start, float multiple) {
