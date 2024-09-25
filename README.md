@@ -12,7 +12,7 @@ ImprovableSkillsAPI.registerSkill(skill);
 ```
 ### Registering new attribute
 ```java
-NumberAttribute<?> EXAMPLE_SKILL_ATTRIBUTE = AttributeFactory.createNumAttribute(Identifier.of("example_skill_attribute"), Text.of("ExampleSkillAttribute"), Text.of("ExampleSkillAttributeDescription"), 1000, 1, 10, 1);
+NumberAttribute<?> EXAMPLE_SKILL_ATTRIBUTE = AttributeFactory.createNumAttribute(Identifier.of("example_skill_attribute").toString(), Text.of("ExampleSkillAttribute").getString(), Text.of("ExampleSkillAttributeDescription").getString(), 1000, 1, 10, 1);
 ImprovableSkillsAPI.registerAttribute(EXAMPLE_SKILL_ATTRIBUTE);
 ```
 ### Attach attribute to skill
