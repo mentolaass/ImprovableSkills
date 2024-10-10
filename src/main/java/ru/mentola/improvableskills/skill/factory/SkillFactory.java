@@ -8,7 +8,7 @@ import ru.mentola.improvableskills.skill.Skill;
 import java.util.Set;
 
 public final class SkillFactory {
-    public static Skill createNew(String id, String tex, String name, String description, int pricePoints, int needLevel, Set<Attribute<?>> attributes) {
-        return new Skill(Identifier.of(id), Identifier.of(tex), Text.of(name), Text.of(description), pricePoints, needLevel, attributes);
+    public static Skill createNew(Identifier id, Identifier tex, Text name, Text description, int pricePoints, int needLevel, Set<Attribute<?>> attributes) {
+        return new Skill(id, tex, name, description, pricePoints, needLevel, attributes);
     }
 }
