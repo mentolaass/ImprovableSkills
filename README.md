@@ -7,17 +7,17 @@ With this mod you can learn unique skills and pump up their characteristics call
 Using the API you can create your skills and attributes.
 ### Registering new skill
 ```java
-Skill skill = SkillFactory.createNew(Identifier.of("example_skill").toString(), Identifier.of("example_skill_texture").toString(), "ExampleSkill", "ExampleSkillDescription", 15000, 10, Set.of());
+Skill skill = SkillFactory.createNew(Identifier.of("example_skill"), Identifier.of("example_skill_texture"), Text.of("ExampleSkill"), Text.of("ExampleSkillDescription"), 15000, 10, Set.of());
 ImprovableSkillsAPI.registerSkill(skill);
 ```
 ### Registering new attribute
 ```java
-NumberAttribute<?> EXAMPLE_SKILL_ATTRIBUTE = AttributeFactory.createNumAttribute(Identifier.of("example_skill_attribute").toString(), Text.of("ExampleSkillAttribute").getString(), Text.of("ExampleSkillAttributeDescription").getString(), 1000, 1, 10, 1);
+NumberAttribute<?> EXAMPLE_SKILL_ATTRIBUTE = AttributeFactory.createNumAttribute(Identifier.of("example_skill_attribute"), Text.of("ExampleSkillAttribute"), Text.of("ExampleSkillAttributeDescription"), 1000, 1, 10, 1);
 ImprovableSkillsAPI.registerAttribute(EXAMPLE_SKILL_ATTRIBUTE);
 ```
 ### Attach attribute to skill
 ```java
-Skill skill = SkillFactory.createNew(Identifier.of("example_skill").toString(), Identifier.of("example_skill_texture").toString(), "ExampleSkill", "ExampleSkillDescription", 15000, 10, Set.of(
+Skill skill = SkillFactory.createNew(Identifier.of("example_skill"), Identifier.of("example_skill_texture"), Text.of("ExampleSkill"), Text.of("ExampleSkillDescription"), 15000, 10, Set.of(
     EXAMPLE_SKILL_ATTRIBUTE
 ));
 ImprovableSkillsAPI.registerSkill(skill);
