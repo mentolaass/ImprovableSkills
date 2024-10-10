@@ -3,6 +3,17 @@ With this mod you can learn unique skills and pump up their characteristics call
 # Screenshots
 [![image.png](https://i.postimg.cc/CK7FQqdJ/image.png)](https://postimg.cc/nssbsM4Q)
 [![image.png](https://i.postimg.cc/1RBC2XzX/image.png)](https://postimg.cc/WtDwJ2gc)
+# Gradle
+Fabric
+```gradle
+repositories {
+    maven {
+        url "https://cursemaven.com"
+    }
+}
+
+modImplementation "curse.maven:improvableskills-1118828:${fileId}"
+```
 # API
 Using the API you can create your skills and attributes.
 ### Registering new skill
